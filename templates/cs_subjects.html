@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-2">Core Computer Science Subjects</h2>
+<p class="mb-4">Select a subject below to dive into detailed topics.</p>
+
+<div class="grid">
+{% for subject_key, subject_data in topics.items() %}
+    <div class="card">
+        <h3 style="color: var(--primary-color);">{{ subject_data.title }}</h3>
+        <p class="mt-1 mb-2">{{ subject_data.description }}</p>
+        <a href="{{ url_for('subject_detail', subject_id=subject_key) }}" class="btn">View Details</a>
+    </div>
+{% endfor %}
+</div>
+
+{% endblock %}

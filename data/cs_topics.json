@@ -1,0 +1,574 @@
+{
+    "os": {
+        "title": "Operating Systems (OS)",
+        "description": "Comprehensive last-minute notes covering core OS functionality, memory management, process scheduling, and synchronization.",
+        "categories": [
+            {
+                "name": "1. Core Definitions & Types",
+                "topics": [
+                    {
+                        "name": "Operating System (OS)",
+                        "explanation": "Software that manages hardware/software resources and provides common services for applications."
+                    },
+                    {
+                        "name": "Batch OS",
+                        "explanation": "Processes batches of jobs without interaction."
+                    },
+                    {
+                        "name": "Time-Sharing OS",
+                        "explanation": "Allows multiple users to interact simultaneously."
+                    },
+                    {
+                        "name": "Distributed OS",
+                        "explanation": "Manages separate computers to act as a single system."
+                    },
+                    {
+                        "name": "RTOS (Real-Time OS)",
+                        "explanation": "Designed for time-sensitive applications with specific response deadlines."
+                    }
+                ]
+            },
+            {
+                "name": "2. System Architecture",
+                "topics": [
+                    {
+                        "name": "Kernel",
+                        "explanation": "The core of the OS, managing CPU, memory, and devices."
+                    },
+                    {
+                        "name": "Monolithic Kernel",
+                        "explanation": "All OS services run in kernel space (fast but complex)."
+                    },
+                    {
+                        "name": "Microkernel",
+                        "explanation": "Only core services in kernel space; others run in user space (more stable/modular)."
+                    },
+                    {
+                        "name": "Shell",
+                        "explanation": "User interface for accessing OS services."
+                    },
+                    {
+                        "name": "Socket",
+                        "explanation": "Communication endpoint for networked machines."
+                    }
+                ]
+            },
+            {
+                "name": "3. Process & Thread Management",
+                "topics": [
+                    {
+                        "name": "Program vs. Process",
+                        "explanation": "A program is an executable file on disk; a process is a program in execution (with stack, heap, data, and text sections)."
+                    },
+                    {
+                        "name": "Thread",
+                        "explanation": "The smallest unit of CPU execution; lightweight process sharing memory within a process."
+                    },
+                    {
+                        "name": "Process Table & PCB",
+                        "explanation": "Process Table maintains active processes. PCB (Process Control Block) contains state, ID, registers, for a single process."
+                    },
+                    {
+                        "name": "Zombie vs Orphan Process",
+                        "explanation": "Zombie: A finished process with an entry remaining in the table. Orphan: A child whose parent process has finished."
+                    },
+                    {
+                        "name": "Context Switching",
+                        "explanation": "Saving and restoring CPU state to switch between processes."
+                    }
+                ]
+            },
+            {
+                "name": "4. Process Scheduling",
+                "topics": [
+                    {
+                        "name": "Scheduling Criteria",
+                        "explanation": "Maximize CPU utilization and fair resource allocation."
+                    },
+                    {
+                        "name": "Preemptive vs Non-Preemptive",
+                        "explanation": "Preemptive: OS can interrupt running process. Non-Preemptive: runs until completion or voluntary release."
+                    },
+                    {
+                        "name": "Algorithms",
+                        "explanation": "FCFS (prone to Convoy Effect), Round Robin (time slices), Priority Scheduling (risk of starvation)."
+                    },
+                    {
+                        "name": "Aging",
+                        "explanation": "Increasing priority of long-waiting processes to prevent starvation."
+                    }
+                ]
+            },
+            {
+                "name": "5. Concurrency & Synchronization",
+                "topics": [
+                    {
+                        "name": "Race Condition",
+                        "explanation": "Unexpected results when two processes access shared data simultaneously."
+                    },
+                    {
+                        "name": "Critical Section",
+                        "explanation": "Code section where shared resources are accessed."
+                    },
+                    {
+                        "name": "Semaphore & Mutex",
+                        "explanation": "Semaphore: Signal variable (Binary or Counting). Mutex: Mutual exclusion object with ownership."
+                    },
+                    {
+                        "name": "Deadlock",
+                        "explanation": "Conditions: Mutual Exclusion, Hold and Wait, No Preemption, Circular Wait. Handling: Prevention, Avoidance (Banker's Algorithm), Detection, Ignorance."
+                    }
+                ]
+            },
+            {
+                "name": "6. Memory Management",
+                "topics": [
+                    {
+                        "name": "MMU",
+                        "explanation": "Memory Management Unit maps logical addresses to physical addresses."
+                    },
+                    {
+                        "name": "Fragmentation",
+                        "explanation": "Internal (block too big) and External (fragmented free spaces). Solved via Compaction or Paging."
+                    },
+                    {
+                        "name": "Paging vs Segmentation",
+                        "explanation": "Paging: Fixed-size memory division. Segmentation: Logical, variable-sized memory division."
+                    },
+                    {
+                        "name": "Virtual Memory",
+                        "explanation": "Makes main memory appear larger. Demand Paging loads pages only when needed."
+                    }
+                ]
+            },
+            {
+                "name": "7. Storage & Advanced Concepts",
+                "topics": [
+                    {
+                        "name": "RAID & Spooling",
+                        "explanation": "RAID: Redundant disks for reliability. Spooling: Buffering data for peripherals like printers."
+                    },
+                    {
+                        "name": "Page Replacement",
+                        "explanation": "Algorithms: LRU, FIFO, Optimal, LFU. Belady's Anomaly affects FIFO (more frames = more page faults)."
+                    },
+                    {
+                        "name": "Thrashing",
+                        "explanation": "Performance collapse due to excessive swapping and page faults."
+                    }
+                ]
+            }
+        ]
+    },
+    "dbms": {
+        "title": "Database Management Systems (DBMS)",
+        "description": "Comprehensive DBMS Concepts and SQL Queries, complete with ACID properties, Keys, Normalization, and Advanced SQL.",
+        "categories": [
+            {
+                "name": "1. Fundamentals & Architecture",
+                "topics": [
+                    {
+                        "name": "What is DBMS?",
+                        "explanation": "Software designed to store, retrieve, and manage data. It prevents data redundancy, ensures data integrity, provides security, and allows concurrent access."
+                    },
+                    {
+                        "name": "DBMS vs File System",
+                        "explanation": "DBMS has lower redundancy (normalized data), high consistency centralization, robust security (Roles/Permissions), and is highly scalable compared to traditional File Systems."
+                    }
+                ]
+            },
+            {
+                "name": "2. ACID Properties",
+                "topics": [
+                    {
+                        "name": "Atomicity",
+                        "explanation": "Transactions are 'all or nothing.' If any part fails, the whole transaction is rolled back."
+                    },
+                    {
+                        "name": "Consistency",
+                        "explanation": "Moves the database from one valid state to another, maintaining all rules and constraints."
+                    },
+                    {
+                        "name": "Isolation",
+                        "explanation": "Transactions occur independently without interference from other concurrent transactions."
+                    },
+                    {
+                        "name": "Durability",
+                        "explanation": "Once committed, changes are permanent, even in case of a complete system failure."
+                    }
+                ]
+            },
+            {
+                "name": "3. Keys in DBMS",
+                "topics": [
+                    {
+                        "name": "Super Key",
+                        "explanation": "A set of one or more columns (attributes) that can uniquely identify a row in a table. It is the most general type of key and may contain redundant attributes."
+                    },
+                    {
+                        "name": "Candidate Key",
+                        "explanation": "A minimal Super Key. It contains the exact minimum number of attributes necessary to uniquely identify a row. There are no redundant attributes. A table can have multiple Candidate Keys."
+                    },
+                    {
+                        "name": "Primary Key",
+                        "explanation": "The main Candidate Key selected by the database designer to uniquely identify records. It cannot contain NULL values and must be strictly unique."
+                    },
+                    {
+                        "name": "Foreign Key",
+                        "explanation": "A column or set of columns that references the Primary Key of another table. It establishes a link (relationship) between the data in two tables, ensuring referential integrity."
+                    },
+                    {
+                        "name": "Alternate Key",
+                        "explanation": "Any Candidate Key that was NOT selected to be the Primary Key. They still possess unique identification properties but act as secondary keys."
+                    },
+                    {
+                        "name": "Composite Key",
+                        "explanation": "A Primary Key that consists of two or more columns acting together to uniquely identify a row. Individually, the columns may not be unique."
+                    }
+                ]
+            },
+            {
+                "name": "4. Normalization",
+                "topics": [
+                    {
+                        "name": "1NF (First Normal Form)",
+                        "explanation": "Rule 1: Each cell must contain a single (atomic) value. Rule 2: Each record needs to be unique. Cannot contain repeating groups or arrays of data.",
+                        "example": "Instead of [John | Java, C++] in one cell, use two separate rows: [John | Java] and [John | C++]."
+                    },
+                    {
+                        "name": "2NF (Second Normal Form)",
+                        "explanation": "Rule 1: Must already be in 1NF. Rule 2: Ensure no partial dependencies. All non-key attributes must depend on the ENTIRE Primary Key, not just a part of a composite key."
+                    },
+                    {
+                        "name": "3NF (Third Normal Form)",
+                        "explanation": "Rule 1: Must already be in 2NF. Rule 2: Ensure no transitive dependencies. A non-key attribute cannot depend on another non-key attribute. Everything must depend ONLY on the primary key."
+                    },
+                    {
+                        "name": "BCNF (Boyce-Codd Normal Form)",
+                        "explanation": "A stricter, stronger version of 3NF. Rule: For every non-trivial functional dependency X -> Y, X must be a Super Key."
+                    }
+                ]
+            },
+            {
+                "name": "5. Transactions, Concurrency & Indexing",
+                "topics": [
+                    {
+                        "name": "ER Diagrams",
+                        "explanation": "Entity (Real-world object), Attributes (Properties), Relationship (Connection between entities). Cardinality maps like 1:1, 1:N."
+                    },
+                    {
+                        "name": "Concurrency Control",
+                        "explanation": "Isolation issues: Dirty Read, Phantom Read. Resolved via Isolation levels (Read Uncommitted, Serializable, etc)."
+                    },
+                    {
+                        "name": "Deadlock",
+                        "explanation": "Two transactions wait for each other. Resolved via Detection or Prevention (Wait-Die, Wound-Wait)."
+                    },
+                    {
+                        "name": "Indexing",
+                        "explanation": "Speeds up data retrieval. Includes Primary Index, Clustered, Non-Clustered, and B+/B-Trees."
+                    }
+                ]
+            },
+            {
+                "name": "6. Basic SQL & JOINS",
+                "topics": [
+                    {
+                        "name": "Basic DML",
+                        "explanation": "SELECT (Retrieve), INSERT (Add), UPDATE (Modify), DELETE (Remove)."
+                    },
+                    {
+                        "name": "JOINS",
+                        "explanation": "INNER JOIN (Matching in both), LEFT JOIN (All Left + Matching Right), RIGHT JOIN, FULL JOIN (Match in either).",
+                        "example": "SELECT e.name, d.dept_name FROM Employees e LEFT JOIN Departments d ON e.dept_id = d.dept_id;"
+                    }
+                ]
+            },
+            {
+                "name": "7. Advanced SQL & Aggregation",
+                "topics": [
+                    {
+                        "name": "Aggregation & Grouping",
+                        "explanation": "Functions like COUNT, SUM, AVG. GROUP BY groups rows, HAVING filters these groups."
+                    },
+                    {
+                        "name": "CTE (Common Table Expression)",
+                        "explanation": "Temporary result set defined within a query's scope.",
+                        "example": "WITH HighEarners AS (SELECT * FROM Emp WHERE salary > 80k) SELECT name FROM HighEarners;"
+                    },
+                    {
+                        "name": "Window Functions",
+                        "explanation": "Performs a calculation across a set of table rows related to the current row.",
+                        "example": "RANK() OVER (ORDER BY salary DESC)"
+                    },
+                    {
+                        "name": "CASE Statement",
+                        "explanation": "SQL's equivalent of an IF/ELSE statement."
+                    }
+                ]
+            }
+        ]
+    },
+    "cn": {
+        "title": "Computer Networks (CN)",
+        "description": "Comprehensive, highly detailed networking principles covering protocol stacks, transmission mechanics, and critical handshakes.",
+        "categories": [
+            {
+                "name": "1. OSI Model - Lower Layers (Hardware/Network)",
+                "topics": [
+                    {
+                        "name": "Layer 1: Physical Layer",
+                        "explanation": "Converts logical bits into a physical signal (electrical, optical, radio). Responsible for topology (Star, Mesh, Bus), transmission mode (Simplex, Half-Duplex, Full-Duplex), and bit synchronization. Devices: Hubs, Repeaters, Cables."
+                    },
+                    {
+                        "name": "Layer 2: Data Link Layer (DLL)",
+                        "explanation": "Ensures node-to-node data transfer. Data is packaged into 'Frames'. \nKey Functions:\n\u2022 Framing & MAC Addressing (Physical 48-bit address).\n\u2022 Error Control: Adds CRC or Checksum to detect damaged frames.\n\u2022 Flow Control: Stop & Wait, Sliding Window protocols.\nDevices: Switches, Bridges."
+                    },
+                    {
+                        "name": "Layer 3: Network Layer",
+                        "explanation": "Handles host-to-host delivery across multiple networks. Data is packaged into 'Packets'.\nKey Functions:\n\u2022 Logical Addressing: Assigns IP addresses (IPv4 / IPv6).\n\u2022 Routing: Uses algorithms (Distance Vector, Link State) to find the shortest path.\nProtocols: IP, ICMP, ARP. Devices: Routers."
+                    }
+                ]
+            },
+            {
+                "name": "2. OSI Model - Upper Layers (Host/Software)",
+                "topics": [
+                    {
+                        "name": "Layer 4: Transport Layer",
+                        "explanation": "Process-to-process delivery. Data is packaged into 'Segments'.\nKey Functions:\n\u2022 Segmentation and Reassembly.\n\u2022 Connection Control: TCP (reliable) vs UDP (unreliable fast).\n\u2022 Port Addressing: Identifies which application (e.g., Port 80 for HTTP) receives the data."
+                    },
+                    {
+                        "name": "Layer 5: Session Layer",
+                        "explanation": "Establishes, maintains, and terminates connections (sessions) between local and remote applications. Uses checkpoints to resume failed data transfers. Example: Authentication and authorization."
+                    },
+                    {
+                        "name": "Layer 6: Presentation Layer",
+                        "explanation": "The 'Translator' for the network. Prepares data for the Application Layer.\nKey Functions:\n\u2022 Translation: ASCII to EBCDIC.\n\u2022 Encryption: SSL/TLS secures the data.\n\u2022 Compression: Reduces data size."
+                    },
+                    {
+                        "name": "Layer 7: Application Layer",
+                        "explanation": "Directly interacts with the user. Provides network services to applications.\nProtocols: HTTP (Web), FTP (File Transfer), SMTP (Email), DNS (Domain lookup)."
+                    }
+                ]
+            },
+            {
+                "name": "3. TCP/IP Model & The 3-Way Handshake",
+                "topics": [
+                    {
+                        "name": "TCP/IP vs OSI",
+                        "explanation": "The practical 4-layer model used in the modern Internet.\n\u2022 Application Layer (Combines OSI L5, L6, L7)\n\u2022 Transport Layer (OSI L4)\n\u2022 Internet Layer (OSI L3)\n\u2022 Network Access Layer (Combines OSI L1, L2)."
+                    },
+                    {
+                        "name": "TCP 3-Way Handshake (Connection Setup)",
+                        "explanation": "Process to establish a reliable TCP connection before sending data.\n1) SYN: Client sends SYN (Synchronize) packet to Server.\n2) SYN-ACK: Server receives SYN, allocates buffers, sends back SYN-ACK.\n3) ACK: Client receives SYN-ACK, replies with ACK (Acknowledge). Connection is now ESTABLISHED."
+                    },
+                    {
+                        "name": "TCP Connection Termination (4-Way Handshake)",
+                        "explanation": "1) FIN: Client says 'I am done sending'.\n2) ACK: Server acknowledges.\n3) FIN: Server says 'I am also done'.\n4) ACK: Client acknowledges. Connection CLOSED."
+                    },
+                    {
+                        "name": "TCP vs UDP",
+                        "explanation": "TCP (Transmission Control Protocol): Connection-oriented, guarantees delivery, strict ordering, performs error checking & flow control (Sliding Window). Slow.\nUDP (User Datagram Protocol): Connectionless, fire-and-forget, no guarantees, fast. Used for VoIP, streaming, gaming."
+                    }
+                ]
+            },
+            {
+                "name": "4. IP Addressing & Subnetting Basics",
+                "topics": [
+                    {
+                        "name": "IPv4 Classes",
+                        "explanation": "32-bit logical address. \n\u2022 Class A: 1.0.0.0 to 126.x.x.x (Huge networks)\n\u2022 Class B: 128.0.0.0 to 191.255.x.x (Medium)\n\u2022 Class C: 192.0.0.0 to 223.255.255.x (Small, Max 254 hosts)\n\u2022 Private IP Ranges: 10.x.x.x (A), 172.16.x.x (B), 192.168.x.x (C)."
+                    },
+                    {
+                        "name": "MAC Address vs IP Address",
+                        "explanation": "MAC (Media Access Control) is a 48-bit physical address permanently burned into the NIC. IP Address is a 32-bit logical address assigned by the network dynamically."
+                    }
+                ]
+            },
+            {
+                "name": "5. Core Network Protocols",
+                "topics": [
+                    {
+                        "name": "DNS (Domain Name System)",
+                        "explanation": "The 'Phonebook' of the internet. Translates human-readable domain names (www.google.com) into machine IP addresses (142.250.190.46). Uses UDP Port 53."
+                    },
+                    {
+                        "name": "DHCP (Dynamic Host Configuration)",
+                        "explanation": "Automatically assigns IP addresses to devices. Uses DORA process: Discover (Client), Offer (Server), Request (Client), Acknowledge (Server)."
+                    },
+                    {
+                        "name": "ARP & ICMP",
+                        "explanation": "ARP (Address Resolution Protocol): Finds the MAC Address associated with a known IP Address locally. \nICMP (Internet Control Message Protocol): Used for diagnostics and error reporting. e.g., 'Ping' uses ICMP Echo Request/Reply."
+                    }
+                ]
+            },
+            {
+                "name": "6. TCP 3-Way Handshake (Deep Dive)",
+                "topics": [
+                    {
+                        "name": "What & Why?",
+                        "explanation": "Before sending data, TCP must ensure both client and server are ready, sync sequence numbers, and establish reliability. Without it: data may be lost, duplicate packets confuse the system."
+                    },
+                    {
+                        "name": "Step 1: Client -> SYN",
+                        "explanation": "Client sends SYN=1, seq=x (random number, e.g. 100). Meaning: 'I want to start communication, my starting sequence is 100'. Random seq prevents old packet confusion."
+                    },
+                    {
+                        "name": "Step 2: Server -> SYN + ACK",
+                        "explanation": "Server replies SYN=1, ACK=1, seq=y (e.g. 300), ack=x+1 (101). Meaning: 'Received your request (ack 101), ready. My sequence is 300'. Acknowledges client and starts its own connection."
+                    },
+                    {
+                        "name": "Step 3: Client -> ACK",
+                        "explanation": "Client sends ACK=1, seq=101, ack=y+1 (301). Meaning: 'Received your response, connection established'. Data transfer begins."
+                    },
+                    {
+                        "name": "Interview Q: SYN Flood Attack",
+                        "explanation": "Attacker sends many SYN requests but never completes handshake. Server resources get exhausted waiting for the final ACKs."
+                    }
+                ]
+            },
+            {
+                "name": "7. Advanced Network Mechanics & Flows",
+                "topics": [
+                    {
+                        "name": "TCP vs UDP (Analogy)",
+                        "explanation": "TCP (Reliable): Like sending an important document via courier. Connection established, sent in order, ack sent, lost data is resent. No data loss.\nUDP (Unreliable): Like shouting in a crowd. No confirmation, no guarantee, fast. Used for Video streaming / Gaming."
+                    },
+                    {
+                        "name": "What happens when you type google.com?",
+                        "explanation": "1. DNS Resolution: Checks cache -> local DNS -> root -> TLD -> authoritative server. Returns IP.\n2. TCP Connection: 3-way handshake established.\n3. HTTP Request: Browser sends GET / HTTP/1.1.\n4. Server Response: Sends HTML/CSS/JS.\n5. Browser Rendering: Parses code and shows webpage."
+                    },
+                    {
+                        "name": "ARP & Routing Logic",
+                        "explanation": "ARP: 'Who has this IP? I have -> here is my MAC'. Needed to send data strictly in a local network.\nRouting: Data doesn't go direct. Laptop -> Router -> ISP -> Internet -> Server. Routers check IPs and forward like Google Maps."
+                    },
+                    {
+                        "name": "Flow vs Congestion Control",
+                        "explanation": "Flow Control: Sender is fast, receiver is slow. Solution: Control sending rate (Sliding Window).\nCongestion Control: Too much traffic in the network itself. Solution: TCP reduces speed, gradually increases (Like traffic signals)."
+                    },
+                    {
+                        "name": "HTTP vs HTTPS & Sockets",
+                        "explanation": "HTTP is plaintext (hackable). HTTPS is secure/encrypted via SSL/TLS.\nSocket Programming: Endpoint communication. Server creates socket & listens. Client connects. Data exchanged (Used in Chat apps)."
+                    }
+                ]
+            }
+        ]
+    },
+    "oop": {
+        "title": "Object-Oriented Programming (OOP)",
+        "description": "Complete last-minute OOP notes covering classes, interfaces, inheritance, constructors, and copies.",
+        "categories": [
+            {
+                "name": "1. Class vs. Object",
+                "topics": [
+                    {
+                        "name": "Class",
+                        "explanation": "A logical entity that serves as a blueprint or template for creating objects. It does not occupy memory itself."
+                    },
+                    {
+                        "name": "Object",
+                        "explanation": "A physical entity that is an instance of a class. When an object is created, it occupies memory based on its properties."
+                    }
+                ]
+            },
+            {
+                "name": "2. Static vs Non-Static Method",
+                "topics": [
+                    {
+                        "name": "Static Method",
+                        "explanation": "Belongs to the class. Can be called directly using the class name. Can only access static variables and methods directly."
+                    },
+                    {
+                        "name": "Non-Static Method",
+                        "explanation": "Belongs to an instance (object). Requires an object to be created. Can access both static and non-static data/methods."
+                    }
+                ]
+            },
+            {
+                "name": "3. Core OOP Principles",
+                "topics": [
+                    {
+                        "name": "Abstraction",
+                        "explanation": "Hiding implementation details and exposing only the essential interface.",
+                        "example": "An ATM machine. You withdraw money but don't know the internal cash counting logic."
+                    },
+                    {
+                        "name": "Encapsulation",
+                        "explanation": "Wrapping variables and methods into a single unit (class) and restricting direct access using private modifiers.",
+                        "example": "A medical capsule hiding the medicine inside its shell."
+                    },
+                    {
+                        "name": "Inheritance",
+                        "explanation": "A mechanism where a Child class acquires properties and behaviors from a Parent class to promote code reusability.",
+                        "example": "A Child inheriting physical traits from a Parent."
+                    },
+                    {
+                        "name": "Polymorphism",
+                        "explanation": "Allows a single action to perform differently depending on the context.",
+                        "example": "Compile-Time: Method Overloading. Run-Time: Method Overriding."
+                    }
+                ]
+            },
+            {
+                "name": "4. Method Overloading vs Method Overriding",
+                "topics": [
+                    {
+                        "name": "Method Overloading",
+                        "explanation": "Multiple methods with same name but different parameters in the same class. Compile-time binding."
+                    },
+                    {
+                        "name": "Method Overriding",
+                        "explanation": "Subclass providing its own implementation for a method in the parent class. Requires inheritance, same parameters. Run-time binding."
+                    }
+                ]
+            },
+            {
+                "name": "5. Abstract Class vs Interface",
+                "topics": [
+                    {
+                        "name": "Abstract Class",
+                        "explanation": "When classes share a common identity. Allows both Abstract & Concrete methods. Variables of all types allowed. No multiple inheritance."
+                    },
+                    {
+                        "name": "Interface",
+                        "explanation": "To define a contract (100% Abstraction). Mainly Abstract methods. Allows Multiple Inheritance. Variables are public static final by default."
+                    }
+                ]
+            },
+            {
+                "name": "6. Types of Constructors",
+                "topics": [
+                    {
+                        "name": "Default Constructor",
+                        "explanation": "Inserted by the compiler if no manual constructor is provided."
+                    },
+                    {
+                        "name": "Parameterized Constructor",
+                        "explanation": "Used to initialize objects with specific values."
+                    },
+                    {
+                        "name": "Copy Constructor",
+                        "explanation": "Creates a new object using the values of an existing object."
+                    },
+                    {
+                        "name": "Private Constructor",
+                        "explanation": "Restricts object creation from outside the class (used in Singleton Pattern)."
+                    }
+                ]
+            },
+            {
+                "name": "7. Shallow Copy vs Deep Copy",
+                "topics": [
+                    {
+                        "name": "Shallow Copy",
+                        "explanation": "Copies the reference to the original object. Changes in nested objects affect both the original and the copy."
+                    },
+                    {
+                        "name": "Deep Copy",
+                        "explanation": "Recursively copies all objects, creating completely independent instances. Changes in one do not affect the other."
+                    }
+                ]
+            }
+        ]
+    }
+}

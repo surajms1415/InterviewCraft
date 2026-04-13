@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-4" style="display: flex; justify-content: space-between; align-items: center;">
+    <a href="{{ url_for('cs_subjects') }}" style="color: var(--secondary-color); text-decoration: none; font-weight: 500;">&larr; Back to Subjects</a>
+    <a href="{{ url_for('subject_examples', subject_id=subject_id) }}" class="btn">View Examples &rarr;</a>
+</div>
+
+<h2 class="mb-2" style="color: var(--primary-color);">{{ subject.title }}</h2>
+<p class="mb-4">{{ subject.description }}</p>
+
+{% if subject.categories %}
+    {% for category in subject.categories %}
+        <h3 class="mt-4 mb-2" style="color: var(--text-color); border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">{{ category.name }}</h3>
+        <div class="grid mb-4">
+            {% for topic in category.topics %}
+            <div class="card">
+                <h4 style="color: var(--primary-color);">{{ topic.name }}</h4>
+                <p class="mt-1" style="white-space: pre-wrap;"><strong>Explanation:</strong> {{ topic.explanation }}</p>
+                {% if topic.example %}
+                <p class="mt-1" style="font-style: italic; color: var(--secondary-color); white-space: pre-wrap;"><strong>Example:</strong> {{ topic.example }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="grid">
+        {% for topic in subject.topics %}
+        <div class="card">
+            <h4 style="color: var(--primary-color);">{{ topic.name }}</h4>
+            <p class="mt-1"><strong>Explanation:</strong> {{ topic.explanation }}</p>
+            {% if topic.example %}
+            <p class="mt-1" style="font-style: italic; color: var(--secondary-color);"><strong>Example:</strong> {{ topic.example }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

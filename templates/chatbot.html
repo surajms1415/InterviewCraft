@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-2">AI Chatbot Assistant</h2>
+
+<div class="mb-4" style="background: var(--bg-color); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+    <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">AI Configuration</h3>
+    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">To chat with the real LLM natively, enter your Gemini API Key below. This key is securely saved locally in your browser.</p>
+    <p style="font-size: 0.85rem; margin-bottom: 1rem; color: var(--secondary-color);">Don't have one? <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Get your free Gemini API Key here</a>.</p>
+    <div style="display: flex; gap: 10px;">
+        <input type="password" id="geminiApiKey" class="form-control" placeholder="sk-..." style="max-width: 300px;">
+        <button type="button" class="btn active" onclick="saveApiKey()">Save API Key</button>
+    </div>
+    <p id="apiStatus" style="font-size: 0.8rem; color: var(--secondary-color); margin-top: 0.5rem;"></p>
+</div>
+<script>
+function saveApiKey() {
+    const key = document.getElementById('geminiApiKey').value;
+    if(key) {
+        localStorage.setItem('gemini_api_key', key);
+        document.getElementById('apiStatus').innerText = "Key saved successfully!";
+        document.getElementById('apiStatus').style.color = "#4ade80";
+    } else {
+        document.getElementById('apiStatus').innerText = "Please enter a valid key.";
+        document.getElementById('apiStatus').style.color = "#ef4444";
+    }
+}
+window.addEventListener('DOMContentLoaded', () => {
+    if(localStorage.getItem('gemini_api_key')) {
+        document.getElementById('geminiApiKey').value = localStorage.getItem('gemini_api_key');
+    }
+});
+</script>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+    <p class="mb-0">Ask any placement-related doubts.</p>
+    <form id="export-chat-form" action="{{ url_for('export_chat') }}" method="POST" style="margin: 0;">
+        <input type="hidden" name="chat_data" id="chat_data_input">
+        <button type="button" class="btn active" id="export-chat-btn" style="padding: 0.5rem 1rem; border-radius: 4px;">Export Chat (.docx)</button>
+    </form>
+</div>
+
+<div class="chat-container">
+    <div class="chat-box" id="chat-box">
+        <div class="chat-message bot">
+            Hello! I am your PrepForge AI assistant. How can I help you with your placement preparation today? Try asking about OS, DBMS, or GD tips!
+        </div>
+    </div>
+    <div class="chat-input">
+        <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off">
+        <button id="chat-send">Send</button>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,50 @@
+import json
+
+filepath = r'c:\Users\91866\.gemini\antigravity\scratch\prepforge-ai\data\hr_questions.json'
+
+expanded_hr = {
+    "Personal": [
+        {"question": "Tell me about yourself.", "hint": "Focus on academic background, key skills, and brief project experience. Avoid lengthy personal details."},
+        {"question": "Where do you see yourself in 5 years?", "hint": "Align your goals with the role. Do not say 'In your position'. Discuss aiming for a senior technical or architectural role."},
+        {"question": "Why do you want to work for our company?", "hint": "Mention specific products, mission, or stack they use. Show you did your research."},
+        {"question": "What is your biggest professional achievement so far?", "hint": "Use the STAR method. Describe a time you optimized code, led a major project, or solved a critical bug."},
+        {"question": "What motivates you to perform at your best?", "hint": "Discuss solving complex problems, continuous learning, and seeing the direct impact of your work."},
+        {"question": "How do you keep your technology skills current?", "hint": "Mention reading specific blogs, working on side projects, or taking certifications."},
+        {"question": "Describe your ideal work environment.", "hint": "Mention collaborative, transparent, and innovative environments that encourage learning."},
+        {"question": "Why are you leaving your current role / looking for an internship?", "hint": "Focus on seeking more growth, utilizing a specific tech stack, or finding a more challenging domain."}
+    ],
+    "Strengths & Weaknesses": [
+        {"question": "What are your top 3 strengths?", "hint": "Provide examples. (e.g., Problem-solving, Adaptability, Fast learner). Back them up with instances."},
+        {"question": "What is your biggest weakness?", "hint": "Mention a real weakness (e.g., getting too wrapped up in details) but pair it with how you are actively overcoming it."},
+        {"question": "Tell me about a time you failed.", "hint": "Discuss the failure honestly. The most important part is what you LEARNED and how you ensured it didn't happen again."},
+        {"question": "How do you handle constructive criticism?", "hint": "Explain that you separate your ego from the code, and view feedback as a collaborative tool for improvement."},
+        {"question": "What would your previous manager say is your strongest area for improvement?", "hint": "Be honest. Maybe time-boxing tasks or speaking up more in large meetings."},
+        {"question": "Are you a better starter or finisher?", "hint": "In software, finishing (testing, deploying, documenting) is critical. Emphasize your ability to see things entirely through."},
+        {"question": "Have you ever disagreed with a decision at work?", "hint": "Show professional disagreement. You presented data, discussed it, and if overruled, you committed to the team's direction without resentment."},
+        {"question": "How do you manage scope creep on a project?", "hint": "Describe defining clear MVP requirements and communicating trade-offs to stakeholders before promising features."}
+    ],
+    "Behavioral": [
+        {"question": "Describe a time you faced a conflict in a team.", "hint": "Use the STAR method. Focus on how you diplomatically resolved the situation and focused on the technical goal."},
+        {"question": "How do you handle pressure and tight deadlines?", "hint": "Talk about prioritization, breaking tasks into smaller chunks, communicating risks early, and staying focused."},
+        {"question": "Tell me about a time you had to work with a difficult co-worker.", "hint": "Never badmouth them. Discuss setting clear boundaries, focusing on data/code instead of emotion, and finding common ground."},
+        {"question": "Give an example of a time you showed initiative.", "hint": "Discuss a time you automated a manual process or learned a new framework to solve an architectural bottleneck."},
+        {"question": "Tell me about a time you had to learn a new technology on the fly.", "hint": "Highlight your adaptability. Explain your fast-learning process (reading docs, building small POCs)."},
+        {"question": "Describe a time you missed a deadline.", "hint": "Admit the mistake. Focus on how you communicated the delay early to stakeholders and the contingency plan you created."},
+        {"question": "How do you prioritize your work when everything seems urgent?", "hint": "Mention using frameworks like the Eisenhower Matrix, prioritizing blockers for other teammates, and communicating with PMs."},
+        {"question": "Tell me about a time you had to persuade someone to see things your way.", "hint": "Focus on using logical reasoning, data, and performance metrics over emotional arguments to win them over."}
+    ],
+    "Project-Based": [
+        {"question": "Which of your projects are you most proud of and why?", "hint": "Discuss a project where you solved a significant problem. Emphasize YOUR specific contribution."},
+        {"question": "What was a major challenge you faced in your final year project?", "hint": "Explain the technical hurdle (e.g., concurrency, DB locks, memory leaks) and exactly what steps you took to overcome it."},
+        {"question": "If you could redo your last project from scratch, what architectural changes would you make?", "hint": "Shows critical thinking. Mention using a different DB, microservices vs monolith, or better testing coverage."},
+        {"question": "Explain a complex technical concept from your project to a non-technical stakeholder.", "hint": "Test of communication. Avoid jargon. Use analogies (e.g., 'API is like a waiter in a restaurant')."},
+        {"question": "How did you ensure the quality and security of your code in your GitHub projects?", "hint": "Mention writing unit tests, edge-case handling, input validation, or CI/CD pipelines."},
+        {"question": "Walk me through how you debugged a critical issue in production/deployment.", "hint": "Discuss reading logs, isolating variables, writing a reproducing test case, and deploying the hotfix."},
+        {"question": "Describe the database schema of your most complex application.", "hint": "Talk about Normalization, why you chose SQL vs NoSQL, and how you handled potential bottlenecks or large queries."},
+        {"question": "How did you manage version control and collaboration on your team project?", "hint": "Mention Git branching strategies (Feature branches, GitFlow), pull requests, and code reviews."}
+    ]
+}
+
+with open(filepath, 'w', encoding='utf-8') as f:
+    json.dump(expanded_hr, f, indent=4)
+print("Expanded HR questions")

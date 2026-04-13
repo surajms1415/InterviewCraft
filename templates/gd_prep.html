@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-2">Group Discussion Preparation</h2>
+
+<h3 class="mt-4" style="color: var(--primary-color);">How to Speak in GD</h3>
+<div class="grid mb-4">
+    {% for tip in gd_data.tips %}
+    <div class="card">
+        <h4>{{ tip.title }}</h4>
+        <p class="mt-1">{{ tip.content }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<h3 class="mt-4" style="color: var(--primary-color);">Top GD Topics</h3>
+<div class="grid mb-4">
+    {% for topic in gd_data.topics %}
+    <div class="card">
+        <h4>{{ topic.title }}</h4>
+        <ul style="margin-top: 1rem; margin-left: 1.5rem;">
+            {% for pt in topic.points %}
+            <li>{{ pt }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+</div>
+
+<h3 class="mt-4" style="color: var(--primary-color);">GD Simulation: {{ gd_data.simulation.topic }}</h3>
+<div class="card mt-2">
+    {% for dialog in gd_data.simulation.dialogue %}
+    <p class="mb-1"><strong>{{ dialog.speaker }}:</strong> {{ dialog.text }}</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-4" style="display: flex; justify-content: space-between; align-items: center;">
+    <a href="{{ url_for('subject_detail', subject_id=subject_id) }}" style="color: var(--secondary-color); text-decoration: none; font-weight: 500;">&larr; Back to Theory</a>
+</div>
+
+<h2 class="mb-2" style="color: var(--primary-color);">{{ subject.title }} - Deep Dive Examples</h2>
+<p class="mb-4">{{ subject.description }}</p>
+
+{% if subject.categories %}
+    {% for category in subject.categories %}
+        <h3 class="mt-4 mb-2" style="color: var(--text-color); border-bottom: 2px solid var(--border-color); padding-bottom: 0.5rem;">{{ category.name }}</h3>
+        <div class="grid mb-4" style="grid-template-columns: 1fr;"> <!-- Full width for big examples -->
+            {% for topic in category.topics %}
+            <div class="card">
+                <h4 style="color: var(--primary-color);">{{ topic.name }}</h4>
+                <p class="mt-1" style="white-space: pre-wrap;"><strong>Explanation:</strong> {{ topic.explanation }}</p>
+                {% if topic.example %}
+                <div style="background: var(--bg-color); padding: 1rem; border-radius: 4px; border: 1px solid var(--border-color); margin-top: 1rem;">
+                    <p style="font-family: monospace; white-space: pre-wrap; font-size: 0.95rem;">{{ topic.example }}</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% else %}
+    <p>Examples currently being curated. Check back soon!</p>
+{% endif %}
+{% endblock %}

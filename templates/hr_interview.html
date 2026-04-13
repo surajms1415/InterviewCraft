@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-2">HR Interview Preparation</h2>
+
+<div class="mb-4" style="background: var(--bg-color); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+    <h3 style="color: var(--primary-color); margin-bottom: 0.5rem;">AI Configuration (For Personalized Extraction)</h3>
+    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">To power real-time AI capabilities, enter your Gemini API Key below. This key is securely saved locally in your browser.</p>
+    <p style="font-size: 0.85rem; margin-bottom: 1rem; color: var(--secondary-color);">Don't have one? <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--primary-color); text-decoration: underline;">Get your free Gemini API Key here</a> (Takes 1 minute). Just login, click "Create API key", and paste it below!</p>
+    <div style="display: flex; gap: 10px;">
+        <input type="password" id="geminiApiKey" class="form-control" placeholder="sk-..." style="max-width: 300px;">
+        <button type="button" class="btn active" onclick="saveApiKey()">Save API Key</button>
+    </div>
+    <p id="apiStatus" style="font-size: 0.8rem; color: var(--secondary-color); margin-top: 0.5rem;"></p>
+</div>
+<script>
+function saveApiKey() {
+    const key = document.getElementById('geminiApiKey').value;
+    if(key) {
+        localStorage.setItem('gemini_api_key', key);
+        document.getElementById('apiStatus').innerText = "Key saved successfully!";
+        document.getElementById('apiStatus').style.color = "#4ade80";
+    } else {
+        document.getElementById('apiStatus').innerText = "Please enter a valid key.";
+        document.getElementById('apiStatus').style.color = "#ef4444";
+    }
+}
+window.addEventListener('DOMContentLoaded', () => {
+    if(localStorage.getItem('gemini_api_key')) {
+        document.getElementById('geminiApiKey').value = localStorage.getItem('gemini_api_key');
+        document.getElementById('apiStatus').innerText = "API Key loaded from LocalStorage.";
+    }
+});
+</script>
+
+<div class="grid">
+    <!-- Static Section -->
+    <div style="grid-column: 1 / -1;">
+        <h3 class="mt-4" style="color: var(--primary-color);">Common HR Questions</h3>
+        <p class="mb-4">Review frequently asked questions across different categories by HR professionals.</p>
+        
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+            {% for category, questions in hr_data.items() %}
+            <div class="card">
+                <h4>{{ category }}</h4>
+                <ul style="list-style-type: none; padding: 0; margin-top: 1rem;">
+                    {% for q in questions %}
+                    <li class="mb-2">
+                        <strong>Q: {{ q.question }}</strong><br>
+                        <span style="font-size: 0.9rem; color: var(--secondary-color);">💡 {{ q.hint }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <hr style="grid-column: 1 / -1; margin: 2rem 0; border: 0; border-top: 1px solid var(--border-color);">
+
+    <!-- Dynamic AI Section -->
+    <div style="grid-column: 1 / -1;">
+        <h3 class="mt-2" style="color: var(--primary-color);">Generate Personalized Questions</h3>
+        <p class="mb-2">Upload your resume or provide a GitHub profile link to simulate personalized questions based on your profile.</p>
+
+        {% if error %}
+        <div class="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="card">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="github_link">GitHub Profile Link (Optional)</label>
+                    <input type="url" name="github_link" id="github_link" class="form-control" placeholder="https://github.com/username">
+                </div>
+                <div class="form-group">
+                    <label for="resume">Upload Resume (PDF only)</label>
+                    <input type="file" name="resume" id="resume" class="form-control" accept=".pdf">
+                </div>
+                <button type="submit" class="btn mt-2">Generate Questions</button>
+            </form>
+        </div>
+
+        {% if generated_questions %}
+        <div class="output-box mt-4" id="generated-results">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 class="mb-0">Your Personalized Interview Questions:</h4>
+                <form action="{{ url_for('export_hr') }}" method="POST" style="margin: 0;">
+                    <input type="hidden" name="questions_data" value="{{ generated_questions | tojson | forceescape }}">
+                    <button type="submit" class="btn active" style="padding: 0.5rem 1rem;">Export to Word (.docx)</button>
+                </form>
+            </div>
+            <div class="grid" style="grid-template-columns: 1fr;">
+                {% for q in generated_questions %}
+                <div class="card" style="background-color: var(--bg-color);">
+                    <strong>Q: {{ q.question }}</strong>
+                    <p class="mt-1" style="font-size: 0.9rem; color: var(--secondary-color);">💡 Hint: {{ q.hint }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

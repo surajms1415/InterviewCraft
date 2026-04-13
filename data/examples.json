@@ -1,0 +1,171 @@
+{
+    "dbms": {
+        "title": "Database Management Systems (DBMS)",
+        "description": "Deep-dive examples and execution flows for SQL and Schema Design.",
+        "categories": [
+            {
+                "name": "Schema Design Examples",
+                "topics": [
+                    {
+                        "name": "Normalization Step-by-Step (1NF to 3NF)",
+                        "explanation": "Understanding how to decompose a messy table into a normalized relational schema.",
+                        "example": "Scenario: You have an 'Orders' table containing multiple items per row.\n\n[Unnormalized]\nOrder1 | John | Apple, Banana | New York\n\n[1NF (Atomic Values)]\nOrder1 | John | Apple  | New York\nOrder1 | John | Banana | New York\n\n[2NF (No Partial Dependency)]\nIf Primary Key is (OrderID, Item), then Name and City only depend on OrderID!\nDecompose:\nTable 1: OrderID -> Name, City\nTable 2: OrderID, Item\n\n[3NF (No Transitive Dependency)]\nIf City depends on Name (John -> New York), New York doesn't directly depend on OrderID.\nDecompose Table 1 further:\nTable 1a: OrderID -> Name\nTable 1b: Name -> City"
+                    }
+                ]
+            },
+            {
+                "name": "SQL Step-by-Step Execution Logs",
+                "topics": [
+                    {
+                        "name": "1. Basic SQL (SELECT, UPDATE, DELETE)",
+                        "explanation": "Understand how the DBMS processes queries internally.",
+                        "example": "SELECT * FROM Students WHERE age > 20;\n\nExecution:\n1. FROM: DBMS loads Students table.\n2. WHERE: Scans row by row.\nRow 1 -> age=21 -> TRUE\nRow 2 -> age=19 -> FALSE\nRow 3 -> age=22 -> TRUE\n3. SELECT: Returns filtered rows.\n\nUPDATE Execution: Locates row -> modifies in-place -> writes transaction log.\nDELETE Execution: Scans -> checks condition -> marks as deleted."
+                    },
+                    {
+                        "name": "2. JOINS Deep Understanding",
+                        "explanation": "Joins execute like nested loops internally. Only matching pairs survive in INNER JOIN.",
+                        "example": "INNER JOIN Execution:\nTake first row from Left Table. Compare with Right Table. If match -> output row. Next row, repeat.\n\nLEFT JOIN Execution:\nStart with Left Table. Match found -> append row. No match -> fill NULL.\nKey Idea: Left table connects to right, preserved at all costs.\n\nRIGHT JOIN Execution:\nStart with Right Table (Reverse logic of LEFT JOIN). Match found -> append row. No match -> fill NULL.\nKey Idea: Right table is always preserved.\n\nFULL JOIN Execution:\nCombine the result of LEFT JOIN and RIGHT JOIN. Fill NULLs wherever data is missing on either side.\nKey Idea: Both tables are preserved; missing matches are padded with NULLs."
+                    },
+                    {
+                        "name": "3. GROUP BY + Aggregation",
+                        "explanation": "GROUP BY reduces rows by creating buckets. HAVING filters these aggregate buckets.",
+                        "example": "SELECT dept, COUNT(*) FROM Emp GROUP BY dept HAVING COUNT(*) > 1;\n\nExecution:\n1. FROM: Load Emp.\n2. GROUP BY: Create groups (IT -> [5000, 6000], HR -> [4000]).\n3. Aggregation (COUNT): IT -> 2, HR -> 1.\n4. HAVING: IT(2)>1 -> Keep, HR(1)>1 -> Remove."
+                    },
+                    {
+                        "name": "4. Subquery Execution Flow",
+                        "explanation": "Inner queries run before outer queries contextually filter results.",
+                        "example": "SELECT name FROM Students WHERE id IN (SELECT student_id FROM Marks);\n\nExecution:\nStep 1: Inner runs first -> returns list [1, 3].\nStep 2: Outer checks each row. If id is in list -> keep, else discard."
+                    },
+                    {
+                        "name": "5. Window Functions vs Group By",
+                        "explanation": "Window functions process data over groups (windows) without collapsing rows together.",
+                        "example": "SELECT name, marks, RANK() OVER (ORDER BY marks DESC) FROM Marks;\n\nExecution:\nNo grouping -> rows stay same.\nSort data by marks desc.\nAssign rank based on order.\nKey difference: GROUP BY reduces rows, WINDOW keeps rows."
+                    }
+                ]
+            }
+        ]
+    },
+    "os": {
+        "title": "Operating Systems (OS)",
+        "description": "In-depth OS execution flows including CPU Scheduling algorithms and Gantt Charts.",
+        "categories": [
+            {
+                "name": "CPU Scheduling Algorithms Breakdown",
+                "topics": [
+                    {
+                        "name": "Common CPU Scheduling Terms",
+                        "explanation": "Arrival Time (AT): When process enters system\nBurst Time (BT): CPU time required\nCompletion Time (CT): When process finishes\nTurnaround Time (TAT): CT - AT\nWaiting Time (WT): TAT - BT"
+                    },
+                    {
+                        "name": "1. FCFS (First Come First Serve)",
+                        "explanation": "Non-preemptive (once started, cannot stop). Prone to Convoy effect (long process delays others).",
+                        "example": "Process | AT | BT\nP1      | 0  | 4\nP2      | 1  | 3\nP3      | 2  | 2\n\nExecution Order:\nP1 -> P2 -> P3\n\nGantt Chart:\n0   4   7   9\n| P1 | P2 | P3 |\n\nCalculations:\nCompletion Time (CT):\nP1->4, P2->7, P3->9\nTurnaround Time (TAT = CT - AT):\nP1->4, P2->6, P3->7\nWaiting Time (WT = TAT - BT):\nP1->0, P2->3, P3->5"
+                    },
+                    {
+                        "name": "2. SJF (Shortest Job First)",
+                        "explanation": "Pick process with smallest burst time. Non-preemptive. Prone to Starvation (long jobs may never run).",
+                        "example": "Process | AT | BT\nP1      | 0  | 6\nP2      | 1  | 2\nP3      | 2  | 4\n\nExecution Order:\nAt time 0 -> only P1 available -> run P1\nAt time 6 -> choose shortest among P2(2) & P3(4) -> run P2, then P3\n\nGantt Chart:\n0   6   8   12\n| P1 | P2 | P3 |\n\nResults (CT | TAT | WT):\nP1 -> 6 | 6 | 0\nP2 -> 8 | 7 | 5\nP3 -> 12| 10| 6"
+                    },
+                    {
+                        "name": "3. SRTF (Shortest Remaining Time First)",
+                        "explanation": "Preemptive version of SJF. Always chooses the process with the smallest remaining burst time.",
+                        "example": "Process | AT | BT\nP1      | 0  | 8\nP2      | 1  | 4\nP3      | 2  | 2\n\nExecution:\nTime 0: Only P1 -> run\nTime 1: P2 arrives (4 < remaining P1=7) -> switch to P2\nTime 2: P3 arrives (2 < remaining P2=3) -> switch to P3\n\nGantt Chart:\n0 1 2 4 7 14\n|P1|P2|P3|P2|P1|"
+                    },
+                    {
+                        "name": "4. ROUND ROBIN (RR)",
+                        "explanation": "Time-sharing system where each process gets a fixed time slice (quantum). Ensures fair scheduling.",
+                        "example": "Time Quantum = 2\n\nProcess | AT | BT\nP1      | 0  | 5\nP2      | 1  | 3\nP3      | 2  | 1\n\nExecution Step-by-step:\n0-2: P1 (remaining 3)\n2-4: P2 (remaining 1)\n4-5: P3 (finished)\n5-7: P1 (remaining 1)\n7-8: P2 (finished)\n8-9: P1 (finished)\n\nGantt Chart:\n0 2 4 5 7 8 9\n|P1|P2|P3|P1|P2|P1|"
+                    },
+                    {
+                        "name": "5. PRIORITY SCHEDULING",
+                        "explanation": "Process with highest priority executes first. Lower number = higher priority. Solves starvation using Aging (increase priority over time).",
+                        "example": "Process | Priority | BT\nP1      | 2        | 4\nP2      | 1        | 3\nP3      | 3        | 2\n\nGantt Chart:\n0   3   7   9\n| P2 | P1 | P3 |"
+                    },
+                    {
+                        "name": "6. MLFQ (Multilevel Feedback Queue)",
+                        "explanation": "Most advanced algorithm. Multiple queues where processes move between queues. Short jobs get priority, while long jobs move down into lower priority background queues."
+                    }
+                ]
+            }
+        ]
+    },
+    "oop": {
+        "title": "Object-Oriented Programming (OOP)",
+        "description": "Deep-dive examples covering advanced OOP implementations like Exception Handling.",
+        "categories": [
+            {
+                "name": "Exception Handling Deep Dive",
+                "topics": [
+                    {
+                        "name": "1. What is Error / Exception Handling?",
+                        "explanation": "Exception Handling = managing runtime errors so program doesn\u2019t crash (e.g. Divide by zero, File not found). Without handling -> Program stops. With handling -> Program continues safely."
+                    },
+                    {
+                        "name": "2. Error vs Exception & Hierarchy",
+                        "explanation": "Error: Serious problem (JVM level, cannot recover like OutOfMemoryError).\nException: Runtime issue (can handle using code like ArithmeticException).\n\nHierarchy:\nThrowable\n \u251c\u2500\u2500 Error\n \u2514\u2500\u2500 Exception\n      \u251c\u2500\u2500 Checked Exception\n      \u2514\u2500\u2500 Unchecked Exception (RuntimeException)"
+                    },
+                    {
+                        "name": "3. Checked vs Unchecked Exceptions",
+                        "explanation": "Checked: Checked at compile time (e.g. IOException, SQLException). Must handle using try-catch OR throws.\nUnchecked: Happens at runtime (e.g. ArithmeticException, NullPointerException)."
+                    },
+                    {
+                        "name": "4. Basic try-catch Execution",
+                        "explanation": "Core execution flow when an exception occurs.",
+                        "example": "try {\n    int a = 10 / 0;   // risky code\n} catch (ArithmeticException e) {\n    System.out.println(\"Cannot divide by zero\");\n}\n\nExecution Step-by-Step:\n1. JVM enters try block -> Executes 10 / 0\n2. Exception occurs -> ArithmeticException\n3. JVM stops normal flow\n4. Searches matching catch block\n5. Executes catch -> Program continues"
+                    },
+                    {
+                        "name": "5. Multiple Catch Blocks",
+                        "explanation": "Handling different errors specifically.",
+                        "example": "try {\n    int arr[] = new int[2];\n    arr[5] = 10;\n} catch (ArithmeticException e) {\n    System.out.println(\"Arithmetic Error\");\n} catch (ArrayIndexOutOfBoundsException e) {\n    System.out.println(\"Array Index Error\");\n}\n\nWorking:\nJVM checks catch blocks top to bottom. Executes the FIRST matching one."
+                    },
+                    {
+                        "name": "6. FINALLY Block",
+                        "explanation": "Always executes regardless of whether an exception occurred. Usually used to close files or release resources.",
+                        "example": "try {\n    int a = 10 / 2;\n} catch (Exception e) {\n    System.out.println(\"Error\");\n} finally {\n    System.out.println(\"Always runs\");\n}"
+                    },
+                    {
+                        "name": "7. Throw vs Throws",
+                        "explanation": "throw: Used to manually create an exception INSIDE a method.\nthrows: Used to declare an exception in the method signature.",
+                        "example": "THROW:\nstatic void checkAge(int age) {\n    if (age < 18) throw new ArithmeticException(\"Not eligible\");\n}\n\nTHROWS:\nstatic void readFile() throws IOException {\n    FileReader file = new FileReader(\"test.txt\");\n}"
+                    },
+                    {
+                        "name": "8. Custom Exception",
+                        "explanation": "Creating user-defined exceptions by extending the Exception class (Very important for interviews).",
+                        "example": "class InvalidAmountException extends Exception {\n    public InvalidAmountException(String msg) { super(msg); }\n}\n\nclass Bank {\n    void withdraw(int amount) throws InvalidAmountException {\n        if (amount > 1000) throw new InvalidAmountException(\"Limit exceeded\");\n    }\n}\n// Working: Condition fails -> throws custom exception -> JVM catches and prints message."
+                    },
+                    {
+                        "name": "9. Try with Resources",
+                        "explanation": "Advanced feature to automatically close resources without needing a finally block.",
+                        "example": "try (FileReader file = new FileReader(\"test.txt\")) {\n    System.out.println(\"File opened\");\n} catch (IOException e) {\n    System.out.println(\"Error\");\n}\n// Advantage: Auto closes resources."
+                    }
+                ]
+            }
+        ]
+    },
+    "cn": {
+        "title": "Computer Networks (CN)",
+        "description": "Deep-dive examples into Subnetting and Routing algorithms.",
+        "categories": [
+            {
+                "name": "1. IPv4 Subnetting Example",
+                "topics": [
+                    {
+                        "name": "Calculating Subnet details from CIDR",
+                        "explanation": "Understanding how to find the Network Address, Broadcast Address, and Range of Host IPs given an IP block.",
+                        "example": "Given IP block: 192.168.1.10 /28\n\nStep 1: Understand the CIDR (/28).\nTotal IP bits = 32. Network bits = 28. Host bits = 32 - 28 = 4 bits.\n\nStep 2: Subnet Mask.\n28 ones: 11111111.11111111.11111111.11110000 => 255.255.255.240\n\nStep 3: Block Size (Magic Number).\n256 - 240 = 16. Subnets increment by 16 (0, 16, 32, ...).\n\nStep 4: Find the Subnet.\nThe IP ends in 10. The nearest multiple of 16 below 10 is 0.\nNetwork Address = 192.168.1.0\nBroadcast Address (one less than next subnet 16) = 192.168.1.15\n\nStep 5: Usable Host IP Range.\n192.168.1.1 to 192.168.1.14 (Total 14 usable hosts)."
+                    }
+                ]
+            },
+            {
+                "name": "2. Routing Algorithms",
+                "topics": [
+                    {
+                        "name": "Distance Vector vs Link State",
+                        "explanation": "Comparative execution of routing protocols.",
+                        "example": "Distance Vector (e.g. RIP):\n- Based on Bellman-Ford algorithm.\n- A node shares its ENTIRE routing table, but ONLY with its immediate neighbors.\n- Can suffer from the 'Count to Infinity' problem.\n\nLink State (e.g. OSPF):\n- Based on Dijkstra's Shortest Path algorithm.\n- A node shares information about its IMMEDIATE neighbors, but broadcasts it to the ENTIRE network.\n- Faster convergence, immune to Count to Infinity."
+                    }
+                ]
+            }
+        ]
+    }
+}
