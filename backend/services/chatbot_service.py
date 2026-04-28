@@ -8,7 +8,7 @@ import io
 GENAI_API_KEY = os.getenv("GENAI_API_KEY", "")
 
 def ask_chatbot(query: str, history: list = [], api_key: str = "") -> str:
-    key = api_key.strip() if api_key and api_key.strip() else GENAI_API_KEY
+    key = api_key.strip() if api_key else ""
     if not key or key == "YOUR_GEMINI_API_KEY_HERE":
         return "Please provide a valid Gemini API Key to use the chatbot."
         
@@ -61,7 +61,9 @@ def ask_chatbot(query: str, history: list = [], api_key: str = "") -> str:
             except Exception as e:
                 err_str = str(e).lower()
                 last_error = e
-                if ("503" in err_str or "high demand" in err_str or "unavailable" in err_str):
+                if "429" in err_str or "quota" in err_str or "limit" in err_str:
+                    return "API Key limit reached. Please provide a new API key to continue."
+                elif ("503" in err_str or "high demand" in err_str or "unavailable" in err_str):
                     if attempt < max_retries - 1:
                         time.sleep(1)
                         continue

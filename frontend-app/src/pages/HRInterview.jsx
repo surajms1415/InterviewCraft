@@ -34,17 +34,32 @@ const HRInterview = () => {
         formData.append('api_key', apiKey);
         
         try {
-            const res = await fetch('http://localhost:8000/api/resume/generate-hr', {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+            const res = await fetch(`${apiUrl}/api/resume/generate-hr`, {
                 method: 'POST',
                 body: formData
             });
             const data = await res.json();
+            
+            if (!res.ok) {
+                alert(data.detail || data.error || "An error occurred. Please check your API key.");
+                setAnalyzing(false);
+                return;
+            }
+            
             if (data.questions) {
-                setQuestions(data.questions);
+                if (data.questions.length === 1 && typeof data.questions[0] === 'string' && data.questions[0].includes('API Key limit')) {
+                    alert("API Key limit reached. Please provide a new API key to continue.");
+                } else if (data.questions.length === 1 && data.questions[0].question && data.questions[0].question.includes('API Key')) {
+                    alert(data.questions[0].question);
+                } else {
+                    setQuestions(data.questions);
+                }
             }
             setAnalyzing(false);
         } catch(e) {
             console.error(e);
+            alert("Network error or server unreachable. Make sure the backend is running.");
             setAnalyzing(false);
         }
     };

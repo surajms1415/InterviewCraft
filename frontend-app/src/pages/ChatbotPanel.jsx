@@ -28,12 +28,19 @@ const ChatbotPanel = ({ msgs, setMsgs, history, setHistory }) => {
         setQuery('');
 
         try {
-            const res = await fetch('http://localhost:8000/api/chat', {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+            const res = await fetch(`${apiUrl}/api/chat`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ query: newMsgs[newMsgs.length-1].text, history: history, api_key: apiKey })
             });
             const data = await res.json();
+            
+            if (data.response && data.response.includes('API Key limit')) {
+                alert("API Key limit reached. Please provide a new API key to continue.");
+            } else if (data.response && data.response.includes('provide a valid Gemini API Key')) {
+                alert(data.response);
+            }
             
             // Format history for gemini
             const updatedHistory = [
@@ -55,7 +62,8 @@ const ChatbotPanel = ({ msgs, setMsgs, history, setHistory }) => {
     const downloadLog = async () => {
         if (history.length === 0) return alert('No chat to export yet.');
         try {
-            const res = await fetch('http://localhost:8000/api/export', {
+            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+            const res = await fetch(`${apiUrl}/api/export`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(history)
