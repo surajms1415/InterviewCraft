@@ -41,24 +41,18 @@ User Question: ${text}`;
         chatBox.appendChild(loadingDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
 
-        async function fetchGemini(modelPath) {
-            const res = await fetch(`https://generativelanguage.googleapis.com/${modelPath}?key=${apiKey}`, {
+        async function fetchLocalAPI() {
+            const res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+                body: JSON.stringify({ message: promptText, api_key: apiKey, history: [] })
             });
             return await res.json();
         }
 
         try {
-            let data = await fetchGemini('v1/models/gemini-2.5-flash:generateContent');
+            let data = await fetchLocalAPI();
             
-            // Auto-Fallback Logic to bypass Google's free-tier throttling
-            if(data.error && (data.error.code === 503 || data.error.message.toLowerCase().includes('demand'))) {
-                loadingDiv.textContent = "Server busy. Rerouting to backup AI cluster...";
-                data = await fetchGemini('v1beta/models/gemini-1.5-flash:generateContent');
-            }
-
             chatBox.removeChild(loadingDiv);
             
             if(data.error) {
@@ -66,11 +60,11 @@ User Question: ${text}`;
                 return;
             }
             
-            let botReply = data.candidates[0].content.parts[0].text;
+            let botReply = data.response || "No response generated.";
             addMessage(botReply, 'bot');
         } catch (err) {
             if(chatBox.contains(loadingDiv)) chatBox.removeChild(loadingDiv);
-            addMessage("Failed to connect to Gemini API. Please check your internet connection or API Key.", 'bot');
+            addMessage("Failed to connect to API. Please check your internet connection.", 'bot');
             console.error(err);
         }
     }

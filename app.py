@@ -6,7 +6,11 @@ import PyPDF2
 import traceback
 from io import BytesIO
 from docx import Document
+from docx.shared import Pt, RGBColor
 from flask import send_file
+
+from backend.services.chatbot_service import ask_chatbot
+from backend.utils.prompts import generate_intense_hr_questions
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -62,6 +66,7 @@ def hr_interview():
 
     if request.method == 'POST':
         github_link = request.form.get('github_link')
+        api_key = request.form.get('api_key', '')
         file = request.files.get('resume')
         
         extracted_text = ""
@@ -90,9 +95,9 @@ def hr_interview():
                 if os.path.exists(filepath):
                     os.remove(filepath)
                     
-            if extracted_text:
-                # Mock keyword based generation
-                generated_questions = generate_mock_questions(extracted_text)
+            if extracted_text or github_link:
+                raw_questions = generate_intense_hr_questions(extracted_text, github_link, "", api_key)
+                generated_questions = [{'question': q, 'hint': ''} for q in raw_questions]
             else:
                 error = "Please provide a GitHub link or upload a PDF resume."
                 
@@ -164,14 +169,29 @@ def export_hr():
         return "Invalid data", 400
 
     doc = Document()
-    doc.add_heading('Your Personalized Interview Questions', 0)
+    
+    # Set default font
+    style = doc.styles['Normal']
+    style.font.name = 'Calibri'
+    style.font.size = Pt(11)
+    
+    title = doc.add_heading('Your Personalized Interview Questions', 0)
+    title.alignment = 1 # Center align
     
     for i, item in enumerate(questions, 1):
         q = item.get('question', '')
         h = item.get('hint', '')
-        doc.add_heading(f"Q{i}: {q}", level=1)
-        doc.add_paragraph(h, style='Intense Quote')
-        doc.add_paragraph("") # Space
+        
+        qh = doc.add_heading(f"Q{i}: {q}", level=1)
+        qh.runs[0].font.size = Pt(14)
+        qh.runs[0].font.color.rgb = RGBColor(0, 51, 153)
+        
+        if h:
+            p = doc.add_paragraph(h, style='Intense Quote')
+            p.paragraph_format.space_after = Pt(14)
+            p.paragraph_format.line_spacing = 1.15
+        else:
+            doc.add_paragraph("") # Space
         
     f = BytesIO()
     doc.save(f)
@@ -186,19 +206,13 @@ def chatbot():
 @app.route('/api/chat', methods=['POST'])
 def api_chat():
     data = request.get_json()
-    message = data.get('message', '').lower()
+    query = data.get('message', '')
+    history = data.get('history', [])
+    api_key = data.get('api_key', '')
     
-    # Simple placeholder logic
-    response = "I am a simple placeholder AI assistant. I received: " + message
+    response_text = ask_chatbot(query, history, api_key)
     
-    if 'os' in message or 'operating system' in message:
-        response = "For OS preparation, focus on Deadlocks, Process Scheduling, and Virtual Memory. Check out the CS Subjects page for more!"
-    elif 'dbms' in message or 'database' in message:
-        response = "Database normalization, ACID properties, and SQL queries are highly asked in DBMS interviews."
-    elif 'gd' in message or 'group discussion' in message:
-        response = "In a GD, clarity of thought and confidence are key. Don't just speak frequently, speak thoughtfully. Make sure to let others speak."
-    
-    return jsonify({"response": response})
+    return jsonify({"response": response_text})
 
 @app.route('/export-chat', methods=['POST'])
 def export_chat():
@@ -213,14 +227,28 @@ def export_chat():
         return "Invalid data", 400
 
     doc = Document()
-    doc.add_heading('PrepForge AI - Chat Transcript', 0)
+    
+    # Set default font
+    style = doc.styles['Normal']
+    style.font.name = 'Calibri'
+    style.font.size = Pt(11)
+
+    title = doc.add_heading('PrepForge AI - Chat Transcript', 0)
+    title.alignment = 1 # Center align
     
     for item in messages:
         sender = item.get('sender', '')
         text = item.get('text', '')
-        doc.add_heading(f"{sender}:", level=2)
-        doc.add_paragraph(text)
-        doc.add_paragraph("") # Space
+        
+        h = doc.add_heading(f"{sender}:", level=2)
+        if sender.lower() == 'user':
+            h.runs[0].font.color.rgb = RGBColor(0, 102, 204)
+        else:
+            h.runs[0].font.color.rgb = RGBColor(34, 139, 34)
+            
+        p = doc.add_paragraph(text)
+        p.paragraph_format.space_after = Pt(14)
+        p.paragraph_format.line_spacing = 1.15
         
     f = BytesIO()
     doc.save(f)

@@ -68,7 +68,8 @@ window.addEventListener('DOMContentLoaded', () => {
         {% endif %}
 
         <div class="card">
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data" onsubmit="document.getElementById('api_key_hidden').value = localStorage.getItem('gemini_api_key') || ''">
+                <input type="hidden" name="api_key" id="api_key_hidden">
                 <div class="form-group">
                     <label for="github_link">GitHub Profile Link (Optional)</label>
                     <input type="url" name="github_link" id="github_link" class="form-control" placeholder="https://github.com/username">

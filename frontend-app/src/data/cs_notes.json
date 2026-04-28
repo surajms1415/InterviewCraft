@@ -1,0 +1,1276 @@
+{
+    "os": {
+        "title": "Operating Systems",
+        "description": "Dive deep into Operating Systems. OS Fundamentals, Process Management, Memory Management, and Interview Questions.",
+        "topics": [
+            {
+                "id": "what-is-os",
+                "title": "Main Functions of an OS",
+                "description": "Think of these as the Department Managers of a company.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Key OS Facts & Details",
+                        "content": "**Definition:** An Operating System (OS) is system software that acts as an interface between user and hardware.\n\n**Booting:** It is loaded into memory during booting and starts running before any application.\n\n**Kernel:** The kernel is the core part of the OS that directly interacts with hardware.\n\n**Resource Management:** OS manages CPU, memory, storage, and I/O devices.\n\n**Processes:** A process is a program in execution; OS handles its creation, scheduling, and termination. Multitasking allows multiple programs to run simultaneously.\n\n**Scheduling:** OS uses scheduling algorithms (like FCFS, Round Robin) to allocate CPU time.\n\n**Memory Management:** Includes allocation, deallocation, and use of virtual memory.\n\n**File System:** Organizes and stores data in files and directories.\n\n**Security:** OS provides security through authentication and access control.\n\n**Device Drivers:** Enable communication between OS and hardware devices.\n\n**Interfaces:** OS supports user interfaces like CLI (Command Line Interface) and GUI (Graphical User Interface).\n\n**Types:** Include Batch, Time-sharing, Real-time, Distributed, and Mobile OS.\n\n**Examples:** Windows, Linux, macOS."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "Core Functions",
+                        "content": "**Process Management:** The OS keeps track of all running programs (Processes). It uses a Scheduler to decide which process gets the CPU and for how long.\n\n**Memory Management:** The OS manages the RAM. It tracks which parts are in use and by whom. It also uses Virtual Memory to let you run programs larger than your actual RAM.\n\n**File System Management:** It maps logical files to physical storage locations (HDD/SSD). It manages permissions (who can read/write).\n\n**I/O Management:** The OS uses Device Drivers to talk to hardware like keyboards, mice, and printers. It provides Buffering and Caching to speed up slow devices.\n\n**Security & Protection:** It ensures that Process A cannot peek into the memory of Process B and that unauthorized users cannot access files."
+                    }
+                ]
+            },
+            {
+                "id": "os-types",
+                "title": "Types of Operating Systems (Evolution)",
+                "description": "How operating systems have evolved to handle different workloads and architectures.",
+                "cards": [
+                    {
+                        "type": "table",
+                        "heading": "Evolution of OS",
+                        "content": "",
+                        "headers": [
+                            "System Type",
+                            "Logic",
+                            "Real-World Context"
+                        ],
+                        "rows": [
+                            [
+                                "Batch OS",
+                                "Users leave jobs with an operator; jobs are grouped by type.",
+                                "High-volume, repetitive tasks (Payroll, Bank statements)."
+                            ],
+                            [
+                                "Multiprogramming",
+                                "When one job waits for I/O, the CPU picks another. Keeps CPU busy.",
+                                "Early mainframe systems to maximize expensive CPU time."
+                            ],
+                            [
+                                "Multitasking",
+                                "CPU switches so fast between jobs that it feels like they run together.",
+                                "Modern PCs (running Chrome, Spotify, and Word at once)."
+                            ],
+                            [
+                                "Real-Time (RTOS)",
+                                "Logic is based on Time. The result must be correct and delivered on time.",
+                                "Hard RTOS: Airbag systems, Pacemakers. Soft RTOS: Video Streaming."
+                            ],
+                            [
+                                "Distributed OS",
+                                "Multiple independent CPUs appear as a single machine to the user.",
+                                "Large-scale server clusters, Cloud computing."
+                            ],
+                            [
+                                "Embedded OS",
+                                "Stripped-down OS for specific tasks with limited power/RAM.",
+                                "Microwave ovens, IoT devices, Car ECUs."
+                            ]
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "kernel-and-system-calls",
+                "title": "Core Concepts: Kernel & System Calls",
+                "description": "These are the most fundamental \"under-the-hood\" concepts often asked in technical rounds.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "The Kernel",
+                        "content": "The Kernel is the heart of the OS. It is the first program loaded when the computer starts and remains in the RAM until the system shuts down.\n\n**Function:** It manages the communication between software and hardware.\n\n**Privilege:** It runs in Kernel Mode (Ring 0), giving it full access to all hardware. User applications run in User Mode, which is restricted for security."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "Types of Kernels",
+                        "content": "**Monolithic Kernel:** All OS services (File system, drivers, memory management) run in a single large process in kernel space.\n\u2022 **Pros:** Very fast (no communication overhead).\n\u2022 **Cons:** If one service crashes (like a printer driver), the whole system crashes. (e.g., Linux).\n\n**Microkernel:** Only the absolute essentials (scheduling, basic IPC) stay in the kernel. Everything else (drivers, file systems) runs as \"user services.\"\n\u2022 **Pros:** Highly stable and secure. If a driver crashes, the kernel survives.\n\u2022 **Cons:** Slower due to constant message passing between user and kernel space. (e.g., L4, Minix).\n\n**Hybrid Kernel:** A mix of both, trying to balance speed and stability. (e.g., Windows NT, macOS)."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "System Calls",
+                        "content": "A System Call is the programmatic way a computer program requests a service from the kernel.\n\n**Mechanism:** Since user apps cannot touch hardware directly, they use a \"System Call\" to ask the Kernel to do it for them.\n\n**Example:** When you write `printf(\"Hello\")` in C, it eventually triggers a `write()` system call to send data to the monitor.\n\n**Types:** Process Control (fork), File Management (open, read), Device Management, Information Maintenance, and Communication."
+                    }
+                ]
+            },
+            {
+                "id": "interrupts",
+                "title": "Interrupts: The OS \"Wake-up Call\"",
+                "description": "An Interrupt is a signal sent to the processor by hardware or software indicating an event that needs immediate attention.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Mechanics",
+                        "content": "When an interrupt occurs, the CPU suspends its current activities, saves its state (registers and program counter), and executes a small piece of code called the Interrupt Service Routine (ISR) or Interrupt Handler."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "Types of Interrupts",
+                        "content": "**1. Hardware Interrupts:** Triggered by external devices (e.g., a mouse click, a keyboard press, or a hard drive finishing a data read).\n**2. Software Interrupts (Traps):** Triggered by errors (like division by zero) or specifically by a program using a System Call to request kernel services.\n**3. Vectored vs. Non-Vectored:** In Vectored interrupts, the device supplies the address of the ISR. In Non-vectored, the ISR address is fixed at a specific memory location."
+                    }
+                ]
+            },
+            {
+                "id": "os-structure-booting",
+                "title": "OS Structure & Booting",
+                "description": "Architectural configurations and booting sequences of operating systems.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Operating System Structures",
+                        "content": "**1. Simple Structure (MS-DOS):** No clear separation between layers. Applications can access hardware directly. Not secure.\n\n**2. Layered Structure:** Each layer uses services of lower layer. Easy to debug and maintain but slower due to multiple layers.\n\n**3. Modular Structure (Linux):** Core kernel + loadable modules. Modules can be loaded/unloaded at runtime. Flexible and efficient."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Booting Process",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>1. Power On\n   \u2502\n2. BIOS/UEFI runs POST (Power-On Self Test)\n   \u2502\n3. Load bootloader from boot device\n   \u2502\n4. Bootloader loads kernel into memory\n   \u2502\n5. Kernel initializes hardware\n   \u2502\n6. Start init process (PID 1) and Load system services\n   \u2502\n7. Display login prompt</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "process-vs-thread",
+                "title": "Process vs. Thread: The Deep Dive",
+                "description": "This is a high-frequency interview topic. Think of a Process as a \"Container\" and a Thread as a \"Worker\" inside that container.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Process",
+                        "content": "A process is a program in execution. It is an independent entity with its own dedicated memory space (Heap, Stack, Data).\n\n**Characteristics:** High overhead to create, high overhead for Context Switching, and very secure (one process cannot easily crash another).\n\n**Communication:** Processes use IPC (Inter-Process Communication) like Pipes, Sockets, or Shared Memory."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Thread",
+                        "content": "A thread is a \"Lightweight Process.\" It is the smallest unit of CPU utilization. Multiple threads can exist within a single process.\n\n**Shared Resources:** Threads share the Code, Data, and OS Resources (like open files) of their parent process, but they have their own Registers, Program Counter, and Stack.\n\n**Characteristics:** Low overhead, extremely fast communication (since they share memory), but less stable (if one thread crashes and corrupts memory, the whole process dies)."
+                    },
+                    {
+                        "type": "table",
+                        "heading": "Comparison Summary",
+                        "content": "",
+                        "headers": [
+                            "Feature",
+                            "Process",
+                            "Thread"
+                        ],
+                        "rows": [
+                            [
+                                "Definition",
+                                "An independent program in execution.",
+                                "A segment of a process (Worker)."
+                            ],
+                            [
+                                "Memory",
+                                "Isolated memory space.",
+                                "Shared memory space with sibling threads."
+                            ],
+                            [
+                                "Context Switching",
+                                "Slow (must save/load entire address space).",
+                                "Fast (only registers and stack change)."
+                            ],
+                            [
+                                "Stability",
+                                "Highly stable (Isolated).",
+                                "One thread can crash the whole process."
+                            ]
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "cpu-scheduling",
+                "title": "CPU Scheduling Algorithms",
+                "description": "The OS uses these algorithms to decide which process in the 'Ready Queue' gets the CPU next to keep it as busy as possible (CPU Utilization) and minimize wait time.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Key Terminology",
+                        "content": "**Arrival Time:** When the process enters the ready queue.\n**Burst Time:** Time required by the process for execution on the CPU.\n**Completion Time:** When the process finishes execution.\n**Waiting Time:** (Turnaround Time \u2013 Burst Time).\n**Turnaround Time:** Total time taken from arrival to completion (Completion Time \u2013 Arrival Time).\n**Response Time:** Time from arrival until the process gets the CPU for the first time."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "1. First-Come, First-Served (FCFS)",
+                        "content": "The simplest algorithm. It works on the FIFO (First-In, First-Out) principle.\n\n**Logic:** The process that requests the CPU first gets it first.\n**Nature:** Non-preemptive (Once a process starts, it won't stop until finished).\n**The Problem:** Convoy Effect. If a process with a very high burst time arrives first, all short processes behind it are blocked, leading to poor average waiting time."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "2. Shortest Job First (SJF)",
+                        "content": "This algorithm links the length of the process's next CPU burst to the scheduling decision.\n\n**Logic:** Pick the process with the smallest burst time.\n**Nature:** Can be Non-preemptive or Preemptive.\nPreemptive SJF is called **Shortest Remaining Time First (SRTF)**. If a new process arrives with a burst time shorter than the remaining time of the current process, the current one is kicked out.\n**Pros:** Theoretically optimal; provides the minimum average waiting time.\n**Cons:** Hard to predict the next burst time; can lead to Starvation of long processes."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "3. Priority Scheduling",
+                        "content": "Each process is assigned a priority (usually an integer).\n\n**Logic:** CPU is allocated to the process with the highest priority (lowest integer usually means highest priority).\n**Problem:** Starvation (Indefinite Blocking). A low-priority process may never run if high-priority processes keep arriving.\n**Solution:** Aging. Gradually increase the priority of processes that have been waiting in the queue for a long time."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "4. Round Robin (RR)",
+                        "content": "Designed specifically for time-sharing systems.\n\n**Logic:** Each process is assigned a small unit of time called a Time Quantum (usually 10-100ms). The CPU moves in a circle through the ready queue.\n**Nature:** Preemptive.\n**Performance:** Heavily dependent on the time quantum.\n\u2022 If the quantum is too large, it behaves like FCFS.\n\u2022 If too small, context switching overhead becomes massive."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "5. Multilevel Queue Scheduling",
+                        "content": "This divides the ready queue into several separate queues (e.g., Foreground/Interactive and Background/Batch).\n\n**Logic:** Each queue has its own scheduling algorithm (e.g., Foreground uses RR, Background uses FCFS).\n**Nature:** Fixed priority. The foreground queue must be empty before the background queue can run."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "6. Multilevel Feedback Queue (MLFQ)",
+                        "content": "Unlike the standard Multilevel Queue, this allows processes to move between queues.\n\n**Logic:** If a process uses too much CPU time, it is moved to a lower-priority queue. If a process waits too long in a lower queue, it is moved up (Aging).\n**Goal:** To separate processes based on their CPU burst characteristics."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Comparative Example",
+                        "content": "Assume we have 3 processes arriving at time 0 with Burst Times: P1=24 ms, P2=3 ms, P3=3 ms.\n\n**FCFS Analysis:**\nOrder: P1 -> P2 -> P3. Wait Times: P1=0, P2=24, P3=27. **Average Wait = 17 ms**.\n\n**SJF (Non-preemptive) Analysis:**\nOrder: P2 -> P3 -> P1 (Shortest first). Wait Times: P2=0, P3=3, P1=6. **Average Wait = 3 ms**.\n\n**Round Robin (TQ=4) Analysis:**\nOrder: P1(4) -> P2(3) -> P3(3) -> P1(remaining 20). Wait Times: P1 gets CPU at 0, then again at 10. P2 waits 4. P3 waits 7. **Average Wait \u2248 5.6 ms**."
+                    }
+                ]
+            },
+            {
+                "id": "process-synchronization",
+                "title": "Process Synchronization",
+                "description": "Process synchronization solves the Race Condition, ensuring that multiple processes don't inconsistently modify shared data.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "1. The Race Condition",
+                        "content": "A **Race Condition** occurs when multiple processes access and manipulate the same data concurrently, and the final outcome depends on the execution order.\n\n**Example:** Balance = $100. Thread A reads $100, prepares to add $50. Thread B reads $100, prepares to withdraw $20. Thread A writes $150. Thread B writes $80. Result: The $50 deposit is lost due to overwriting."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "2. The Critical Section & Its Requirements",
+                        "content": "In any multi-threaded application, the code accessing shared resources is called the **Critical Section**. To avoid Race Conditions, synchronization must satisfy these three mandatory requirements:\n\n**I. Mutual Exclusion (The 'One-at-a-Time' Rule):** If Process P1 is executing in its critical section, no other processes can execute in theirs. *Why:* Without this, data corruption is guaranteed.\n\n**II. Progress (The 'No Unnecessary Waiting' Rule):** If no process is in the critical section and some processes want to enter, only those not in their 'remainder section' can decide who enters next. *Why:* Ensures the decision is made immediately and isn't blocked by uninterested processes.\n\n**III. Bounded Waiting (The 'No Starvation' Rule):** There must be a limit on the number of times other processes are allowed to enter their critical sections after a process has made a request to enter. *Why:* Prevents Starvation so a process doesn't wait forever while 'faster' processes cut in line."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "3. Semaphores: The Deep Dive",
+                        "content": "A **Semaphore** is a protected integer variable that acts as a signal to manage concurrent processes. It is accessed via two atomic operations: `wait()` and `signal()`.\n\n**A. Binary Semaphore (The Mutex):** Can only be 0 or 1.\n\u2022 **How it works:** Starts at 1. When entering a critical section, `wait()` makes it 0. Others find it 0 and sleep. When finished, `signal()` makes it 1 and wakes a sleeper.\n\u2022 **Where/Why it's used:** Used for *Mutual Exclusion* to protect a single shared resource (e.g., one printer) from being accessed by >1 thread at a time.\n\n**B. Counting Semaphore (The Resource Manager):** Any non-negative integer (0 to N).\n\u2022 **How it works:** Initialized to the number of resources (e.g., S=5). When taking a resource, `wait()` drops S. When S=0, next process waits. Once done, `signal()` increments S.\n\u2022 **Where/Why it's used:** Used for *Resource Management* of a \"pool\" of identical resources (e.g., 10 database connections)."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "4. The Producer-Consumer Problem",
+                        "content": "A classic synchronization challenge involving a fixed-size buffer where a Producer adds data and a Consumer removes it.\n\n**Problems to Solve:**\n\u2022 **Buffer Overflow:** Producer shouldn't add if full.\n\u2022 **Buffer Underflow:** Consumer shouldn't remove if empty.\n\u2022 **Race Condition:** Both shouldn't touch the buffer at the same exact microsecond.\n\n**The 3 Semaphores (Tools):**\n\u2022 `mutex`: A binary semaphore (initially 1) ensures only one person touches the buffer.\n\u2022 `empty`: A counting semaphore (initially N) tracks empty slots.\n\u2022 `full`: A counting semaphore (initially 0) tracks filled slots."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "5. Step-by-Step Logic",
+                        "content": "**The Producer's Logic:**\n1. `Wait(empty)`: Decrements empty count. If full (empty=0), waits.\n2. `Wait(mutex)`: Locks the buffer.\n3. **Add Item** to the buffer.\n4. `Signal(mutex)`: Unlocks the buffer.\n5. `Signal(full)`: Increments full count. \"There's food ready!\"\n\n**The Consumer's Logic:**\n1. `Wait(full)`: Decrements full count. If empty (full=0), waits.\n2. `Wait(mutex)`: Locks the buffer.\n3. **Remove Item** from the buffer.\n4. `Signal(mutex)`: Unlocks the buffer.\n5. `Signal(empty)`: Increments empty count. \"I freed up a spot!\""
+                    }
+                ]
+            },
+            {
+                "id": "deadlock",
+                "title": "Deadlock",
+                "description": "A situation where processes are waiting for resources held by each other, creating an infinite cycle.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "1. The 4 Necessary Conditions (Coffman Conditions)",
+                        "content": "For a deadlock to exist, all four of these conditions must be true simultaneously. If you can break even one, deadlock becomes impossible.\n\n**Mutual Exclusion:** At least one resource must be held in a non-shareable mode (Only one process can use it at a time).\n**Hold and Wait:** A process must be holding at least one resource and waiting to acquire additional resources held by others.\n**No Preemption:** Resources cannot be forcibly taken. The process must release them voluntarily.\n**Circular Wait:** A set of processes exists such that P0 is waiting for P1, P1 is waiting for P2, and Pn is waiting for P0. This forms a closed loop."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "2. Handling Deadlock: The 4 Strategies",
+                        "content": "**I. Deadlock Prevention (The Strict Rule-Maker):** Break one Coffman condition. *Mutual Exclusion:* Make resources shareable. *Hold and Wait:* Request all resources at the beginning. *No Preemption:* Release current resources if a new request fails. *Circular Wait:* Force ordered resource requests.\n\n**II. Deadlock Avoidance (The Banker's Algorithm):** OS looks at every request and asks if it leaves the system in a *Safe State*. Maintains tables for Available, Max Need, and Currently Allocated.\n\n**III. Deadlock Detection & Recovery (The Detective):** OS lets deadlocks happen, detects cycles via Resource Allocation Graph (RAG), and recovers via *Process Termination* or *Resource Preemption*.\n\n**IV. Deadlock Ignorance (The Ostrich Algorithm):** OS pretends deadlocks don't exist. Mathematical cost of Banker's Algorithm is too high for general PCs. If a hang happens, user restarts the app/PC."
+                    }
+                ]
+            },
+            {
+                "id": "ipc",
+                "title": "Inter-Process Communication (IPC)",
+                "description": "IPC allows processes to communicate and synchronize securely.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "1. The Two Primary Models of IPC",
+                        "content": "**I. Shared Memory Model:** A region of memory is shared by processes. Process A creates it, Process B attaches to it.\n\u2022 **Pros:** Extremely fast (memory speeds, no Kernel involvement for every message).\n\u2022 **Cons:** Hard to implement. Requires synchronization (Semaphores) to prevent race conditions.\n\n**II. Message Passing Model:** Processes exchange messages via a Kernel \"mailbox\" or \"buffer\". Process A uses `send()`, Process B uses `receive()`.\n\u2022 **Pros:** Easier in distributed systems. More secure because Kernel manages synchronization.\n\u2022 **Cons:** Slower. Every communication requires a System Call and context switch."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "2. Common IPC Techniques",
+                        "content": "**A. Pipes (Ordinary and Named):** For related processes. Ordinary Pipes: Unidirectional, die when process finishes. Named Pipes (FIFOs): Bi-directional, persist as files.\n**B. Sockets:** Most flexible. For processes on same or different machines. Identified by IP/Port.\n**C. Message Queues:** Linked list of messages in kernel. Asynchronous (sender doesn't wait).\n**D. Signals:** Notifications sent to a process (e.g., Ctrl+C sends SIGINT). Simplest but limited."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "3. Direct vs. Indirect Communication",
+                        "content": "**Direct Communication:** Each process must explicitly name the recipient or sender. e.g., `send(P, message)`, `receive(Q, message)`.\n\n**Indirect Communication:** Messages are sent to and received from mailboxes/ports. e.g., `send(mailbox_A, message)`. Sender doesn't care who picks it up, as long as they access mailbox A."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "4. Synchronization in IPC",
+                        "content": "**Blocking (Synchronous):** The sender is blocked until the message is received. Receiver is blocked until message is available.\n**Non-blocking (Asynchronous):** The sender sends the message and resumes work immediately. Receiver retrieves either a valid message or a null."
+                    }
+                ]
+            }
+        ]
+    },
+    "dbms": {
+        "title": "Database Management Systems",
+        "description": "Master Database Management Systems and SQL. Database fundamentals, ACID properties, normalization, keys, ER diagrams, relational algebra.",
+        "topics": [
+            {
+                "id": "what-is-dbms",
+                "title": "What is DBMS?",
+                "description": "A Database Management System (DBMS) is software that enables users to create, manage, and manipulate databases efficiently.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Introduction & Key Components",
+                        "content": "A Database Management System (DBMS) acts as an interface between the database and end users or application programs.\n\n**Key Components:**\n\u2022 **Database Engine:** Core service for storing and retrieving data\n\u2022 **Database Schema:** Logical structure defining organization of data\n\u2022 **Query Processor:** Interprets and executes database queries\n\u2022 **Transaction Manager:** Ensures ACID properties\n\u2022 **Storage Manager:** Manages physical storage of data"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Types of DBMS",
+                        "content": "\u2022 **Hierarchical DBMS:** Data organized in tree structure (parent-child)\n\u2022 **Network DBMS:** More flexible, allows many-to-many relationships\n\u2022 **Relational DBMS (RDBMS):** Data in tables with rows and columns (MySQL, PostgreSQL, Oracle)\n\u2022 **Object-oriented DBMS:** Stores data as objects\n\u2022 **NoSQL DBMS:** Non-relational, for unstructured data (MongoDB, Cassandra)"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- RDBMS Example: Creating a simple database structure\nCREATE DATABASE CompanyDB;\nUSE CompanyDB;\n\nCREATE TABLE Employees (\n    emp_id INT PRIMARY KEY,\n    name VARCHAR(100),\n    department VARCHAR(50),\n    salary DECIMAL(10,2)\n);</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "dbms-vs-file-system",
+                "title": "DBMS vs File System",
+                "description": "File System stores data in files without any relationship management, while DBMS provides structured storage.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "File System Limitations",
+                        "content": "\u2022 **Data Redundancy:** Same data stored multiple times\n\u2022 **Data Inconsistency:** Updates may not reflect everywhere\n\u2022 **Difficulty in Accessing Data:** No query language\n\u2022 **Data Isolation:** Data scattered in various files\n\u2022 **Integrity Problems:** No constraint enforcement\n\u2022 **Atomicity Issues:** No transaction support\n\u2022 **Concurrent Access Anomalies:** No concurrency control\n\u2022 **Security Problems:** Limited access control"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "DBMS Advantages",
+                        "content": "\u2022 **Reduced Redundancy:** Normalization eliminates duplicate data\n\u2022 **Data Consistency:** Single source of truth\n\u2022 **Easy Data Access:** SQL queries for complex retrieval\n\u2022 **Data Integrity:** Constraints ensure valid data\n\u2022 **Atomicity:** Transactions are all-or-nothing\n\u2022 **Concurrent Access:** Multiple users safely\n\u2022 **Security:** Role-based access control\n\u2022 **Backup & Recovery:** Built-in mechanisms"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- File System Problem:\n-- students.txt: John, CS, john@email.com\n-- grades.txt: John, CS, A+\n-- If John changes email, must update multiple files!\n\n-- DBMS Solution:\nCREATE TABLE Students (\n    student_id INT PRIMARY KEY,\n    name VARCHAR(100),\n    email VARCHAR(100) UNIQUE\n);\n\nCREATE TABLE Grades (\n    student_id INT,\n    course VARCHAR(50),\n    grade CHAR(2),\n    FOREIGN KEY (student_id) REFERENCES Students(student_id)\n);\n\n-- Email change only needs ONE update!\nUPDATE Students SET email = 'new@email.com' WHERE student_id = 1;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "acid-properties",
+                "title": "ACID Properties",
+                "description": "ACID properties ensure reliable database transactions. Every transaction must satisfy these four properties.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Atomicity (All or Nothing)",
+                        "content": "\u2022 Transaction is treated as single unit\n\u2022 Either all operations complete successfully, or none do\n\u2022 If any operation fails, entire transaction is rolled back\n\u2022 **Example:** Bank transfer - debit AND credit must both happen"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Consistency (Valid State)",
+                        "content": "\u2022 Database must be in valid state before and after transaction\n\u2022 All constraints, triggers, and rules must be satisfied\n\u2022 Data integrity is maintained\n\u2022 **Example:** Account balance cannot be negative"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Isolation (Independent Execution)",
+                        "content": "\u2022 Concurrent transactions don't interfere with each other\n\u2022 Each transaction appears to run in isolation\n\u2022 Intermediate states are not visible to other transactions\n\u2022 Prevents dirty reads, non-repeatable reads, phantom reads"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Durability (Permanent Changes)",
+                        "content": "\u2022 Once transaction is committed, changes are permanent\n\u2022 Survives system crashes, power failures\n\u2022 Achieved through write-ahead logging (WAL)"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Bank Transfer Example: $500 from Account A to B\n\n-- Without ACID (dangerous):\nUPDATE Accounts SET balance = balance - 500 WHERE account = 'A';\n-- System crashes here! Money disappeared!\nUPDATE Accounts SET balance = balance + 500 WHERE account = 'B';\n\n-- With ACID (safe):\nSTART TRANSACTION;\n\nUPDATE Accounts SET balance = balance - 500 WHERE account = 'A';\nUPDATE Accounts SET balance = balance + 500 WHERE account = 'B';\n\n-- If both succeed:\nCOMMIT;  -- Changes are permanent (Durability)\n\n-- If any fails:\nROLLBACK;  -- All changes undone (Atomicity)</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "keys-in-dbms",
+                "title": "Keys in DBMS",
+                "description": "Keys are attributes used to uniquely identify records and establish relationships between tables.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Super Key & Candidate Key",
+                        "content": "**Super Key:**\n\u2022 Any set of attributes that uniquely identifies a row\n\u2022 May contain extra attributes not needed for uniqueness\n\u2022 Example: `{emp_id}`, `{emp_id, name}`, `{emp_id, name, dept}`\n\n**Candidate Key:**\n\u2022 Minimal super key (no redundant attributes)\n\u2022 A table can have multiple candidate keys\n\u2022 Example: `{emp_id}`, `{email}`, `{phone}` - all unique"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Primary, Foreign, Alternate & Composite Keys",
+                        "content": "**Primary Key:** Chosen candidate key to uniquely identify records. Cannot be NULL, must be unique. Only ONE primary key per table. Creates clustered index by default.\n\n**Foreign Key:** References primary key in another table. Establishes relationships. Can be NULL. Maintains referential integrity.\n\n**Alternate Key:** Candidate keys not chosen as primary key.\n\n**Composite Key:** Primary key made of multiple columns. Used when single column can't ensure uniqueness."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>CREATE TABLE Employees (\n    emp_id INT PRIMARY KEY,           -- Primary Key\n    email VARCHAR(100) UNIQUE,        -- Candidate/Alternate Key\n    phone VARCHAR(15) UNIQUE,         -- Candidate/Alternate Key\n    name VARCHAR(100),\n    dept_id INT,\n    FOREIGN KEY (dept_id) REFERENCES Departments(dept_id)\n);\n\n-- Composite Key Example\nCREATE TABLE OrderItems (\n    order_id INT,\n    product_id INT,\n    quantity INT,\n    PRIMARY KEY (order_id, product_id)  -- Composite Key\n);</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "normalization",
+                "title": "Normalization",
+                "description": "Organizing data in a database to reduce data redundancy (duplication) and improve data integrity.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Introduction: Eliminating Anomalies",
+                        "content": "Normalization involves breaking down large, complex tables into smaller, related tables and defining relationships between them.\n\nThe primary goal is to avoid **Anomalies**:\n\u2022 **Insertion Anomaly:** Being unable to add data because some other data is missing.\n\u2022 **Update Anomaly:** Updating data in one place but not another, leading to inconsistency.\n\u2022 **Deletion Anomaly:** Accidental loss of data when deleting a related record."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "1. First Normal Form (1NF)",
+                        "content": "A table is in 1NF if it meets the following criteria:\n\u2022 Each table cell contains only atomic (indivisible) values.\n\u2022 There are no repeating groups or arrays.\n\u2022 Each record must be unique (usually identified by a Primary Key).\n\n**Example Violation:** A Student table where the Courses column contains 'Math, Physics, Chemistry.'\n**Solution:** Split the courses into separate rows so each cell has only one value."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "2. Second Normal Form (2NF)",
+                        "content": "A table is in 2NF if:\n\u2022 It is already in 1NF.\n\u2022 It has **No Partial Dependency**. Every non-prime attribute (columns that aren't part of the key) must be fully dependent on the entire Primary Key. (Only applies to composite keys).\n\n**Example Violation:** In an Assignment table with `{Emp_ID, Proj_ID}`, if you have `Emp_Name`, it only depends on `Emp_ID`, not the `Proj_ID`.\n**Solution:** Move `Emp_Name` to a separate Employee table."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "3. Third Normal Form (3NF)",
+                        "content": "A table is in 3NF if:\n\u2022 It is already in 2NF.\n\u2022 It has **No Transitive Dependency**. Non-prime attributes should not depend on other non-prime attributes.\n\u2022 *Rule of Thumb:* A column should depend on 'The Key, the Whole Key, and Nothing but the Key.'\n\n**Example Violation:** Employee Table has `Zip_Code` and `City`. City depends on Zip, but Zip is not the PK. `Emp_ID $\\rightarrow$ Zip` and `Zip $\\rightarrow$ City`.\n**Solution:** Create a separate `Zip_Codes` table mapping codes to cities."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "4. Boyce-Codd (BCNF) & Higher Forms",
+                        "content": "**BCNF (3.5 NF):**\nA stronger version of 3NF. For every functional dependency $A \\rightarrow B$, $A$ must be a Super Key. It handles cases where a table has overlapping candidate keys.\n\n**Higher Normal Forms:**\n\u2022 **4NF:** Deals with Multi-valued Dependencies. (Independent multi-valued facts must not share a table).\n\u2022 **5NF:** Project-Join Normal Form (PJNF). Information that can be reconstructed but can't be broken down into strictly two tables without losing data."
+                    },
+                    {
+                        "type": "table",
+                        "heading": "Comparison Summary for Placements",
+                        "content": "",
+                        "headers": [
+                            "Normal Form",
+                            "Main Requirement",
+                            "Eliminates..."
+                        ],
+                        "rows": [
+                            [
+                                "1NF",
+                                "Atomic Values",
+                                "Repeating groups / arrays"
+                            ],
+                            [
+                                "2NF",
+                                "Full Functional Dependency",
+                                "Partial Dependencies"
+                            ],
+                            [
+                                "3NF",
+                                "No Transitive Dependency",
+                                "Transitive Dependencies"
+                            ],
+                            [
+                                "BCNF",
+                                "A \u2192 B, A must be a Key",
+                                "Anomalies from overlapping candidate keys"
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- UNNORMALIZED (violates 1NF):\n-- Student | Courses\n-- John    | Math, Science, English  \u2190 Multiple values!\n\n-- 1NF: Atomic values\nCREATE TABLE StudentCourses (student_id INT, student_name VARCHAR(100), course VARCHAR(50), instructor VARCHAR(100), instructor_dept VARCHAR(50));\n\n-- 2NF: Remove partial dependencies\nCREATE TABLE Students (student_id INT PRIMARY KEY, name VARCHAR(100));\nCREATE TABLE Courses (course_id INT PRIMARY KEY, course_name VARCHAR(50), instructor VARCHAR(100), instructor_dept VARCHAR(50));\nCREATE TABLE Enrollments (student_id INT, course_id INT, PRIMARY KEY (student_id, course_id));\n\n-- 3NF: Remove transitive dependencies\nCREATE TABLE Instructors (instructor_id INT PRIMARY KEY, name VARCHAR(100), dept VARCHAR(50));\nCREATE TABLE Courses_3NF (course_id INT PRIMARY KEY, course_name VARCHAR(50), instructor_id INT);</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "er-diagrams",
+                "title": "ER Diagrams",
+                "description": "Entity-Relationship (ER) Diagrams visually represent database structure showing entities, attributes, and relationships.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "1. Entities: The 'Nouns' of your System",
+                        "content": "Entities represent real-world objects or concepts.\n\n\u2022 **Strong Entity:** An entity that exists independently of others. It has a Primary Key that uniquely identifies it. (Example: An Employee is strong because they exist regardless of dependents).\n\n\u2022 **Weak Entity:** An entity that cannot be uniquely identified by its own attributes alone. It depends on a 'Strong Entity' (Owner). Visual: Drawn as a **Double Rectangle**.\n\n\u2022 **Discriminator (Partial Key):** Weak entities use a dashed-underlined attribute called a discriminator. To identify a weak entity, combine the Strong Entity's Primary Key + the Discriminator."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "2. Attributes: The 'Properties'",
+                        "content": "Attributes describe the characteristics of an entity.\n\n\u2022 **Simple:** Atomic values that cannot be divided (e.g., Age, Gender).\n\u2022 **Composite:** Attributes that can be broken down into sub-parts. (e.g., Name $\\rightarrow$ First_Name, Last_Name). *Tip: Always store sub-parts natively in a real DB.*\n\u2022 **Multi-valued:** Can have more than one value for a single entity (e.g., Phone Numbers). Visual: **Double Oval**.\n\u2022 **Derived:** Not stored physically but calculated (e.g., Age derived from DOB). Visual: **Dashed Oval**."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "3. Relationships & Cardinality",
+                        "content": "Relationships represent how entities interact. Cardinality defines numerical constraints.\n\n\u2022 **One-to-One (1:1):** One instance of A is related to exactly one instance of B. (e.g., User has one Passport).\n\u2022 **One-to-Many (1:N):** One A relates to many B's, but B relates to only one A. (e.g., Department has many Employees).\n\u2022 **Many-to-Many (M:N):** Many instances of A relate to many instances of B. (e.g., Students enroll in many Courses). **Crucial Implementation:** M:N relationships must physically be broken into a 'Junction Table' in an RDBMS."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "4. Participation Constraints",
+                        "content": "Defines whether the existence of an entity depends on its being related to another entity.\n\n\u2022 **Total Participation (Mandatory):** Every entity must be involved in the relationship. (e.g., Every Loan MUST be tied to a Customer). Visual: **Double Line**.\n\u2022 **Partial Participation (Optional):** Entities can exist without being part of the relationship. (e.g., Not every employee has to manage a department). Visual: **Single Line**."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- ER Diagram to Tables Conversion\n-- Entity: Student\nCREATE TABLE Student (student_id INT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100));\n\n-- Entity: Course\nCREATE TABLE Course (course_id INT PRIMARY KEY, title VARCHAR(100), credits INT);\n\n-- Relationship: Enrolls (M:N creates junction table)\nCREATE TABLE Enrolls (\n    student_id INT, course_id INT, enrollment_date DATE, grade CHAR(2),\n    PRIMARY KEY (student_id, course_id),\n    FOREIGN KEY (student_id) REFERENCES Student(student_id),\n    FOREIGN KEY (course_id) REFERENCES Course(course_id)\n);\n\n-- Weak Entity: Dependent (depends on Employee)\nCREATE TABLE Dependent (\n    emp_id INT, dependent_name VARCHAR(100),\n    PRIMARY KEY (emp_id, dependent_name),\n    FOREIGN KEY (emp_id) REFERENCES Employee(emp_id)\n);</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "transactions",
+                "title": "Transactions",
+                "description": "A transaction is a logical unit of work containing one or more database operations that must be executed as a whole.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Transaction States & Control Commands",
+                        "content": "**States:**\n\u2022 Active: Transaction is being executed\n\u2022 Partially Committed: Final statement executed, awaiting commit\n\u2022 Committed: Successfully completed, changes permanent\n\u2022 Failed: Error occurred, cannot proceed\n\u2022 Aborted: Rolled back\n\n**Control Commands:**\n\u2022 BEGIN/START TRANSACTION: Start new transaction\n\u2022 COMMIT: Save all changes permanently\n\u2022 ROLLBACK: Undo all changes since last commit\n\u2022 SAVEPOINT: Create checkpoint within transaction"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Concurrency Problems & Isolation Levels",
+                        "content": "**Concurrency Problems:**\n\u2022 Dirty Read: Reading uncommitted data\n\u2022 Non-Repeatable Read: Same query returns different results\n\u2022 Phantom Read: New rows appear in repeated query\n\u2022 Lost Update: Two transactions overwrite each other\n\n**Isolation Levels:**\n\u2022 READ UNCOMMITTED: Allows dirty reads\n\u2022 READ COMMITTED: No dirty reads\n\u2022 REPEATABLE READ: No dirty or non-repeatable reads\n\u2022 SERIALIZABLE: Highest isolation, no phantoms"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>START TRANSACTION;\nINSERT INTO Orders (order_id, customer_id, total) VALUES (1001, 5, 500.00);\n\nSAVEPOINT order_created;\n\nINSERT INTO OrderItems (order_id, product_id, qty) VALUES (1001, 101, 2);\nINSERT INTO OrderItems (order_id, product_id, qty) VALUES (1001, 102, 1);\n\n-- Product 102 out of stock!\nROLLBACK TO SAVEPOINT order_created;\n\n-- Try different product\nINSERT INTO OrderItems (order_id, product_id, qty) VALUES (1001, 103, 1);\nCOMMIT;\n\n-- Isolation Level Example\nSET TRANSACTION ISOLATION LEVEL REPEATABLE READ;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "indexing",
+                "title": "Indexing",
+                "description": "An index is a data structure that improves the speed of data retrieval operations on a database table.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Why Indexing? & Types",
+                        "content": "\u2022 **Without index:** Full table scan O(n)\n\u2022 **With index:** Quick lookup O(log n) for B-Tree\n\u2022 **Trade-off:** Faster reads, slower writes\n\n**Types of Indexes:**\n\u2022 Primary Index: On primary key, automatically created\n\u2022 Secondary Index: On non-primary key columns\n\u2022 Clustered Index: Determines physical order (only one per table)\n\u2022 Non-Clustered Index: Separate structure pointing to data\n\u2022 Unique Index: Ensures no duplicate values\n\u2022 Composite Index: On multiple columns"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Index Data Structures & When to Use",
+                        "content": "**Data Structures:**\n\u2022 B-Tree: Balanced tree, good for range queries\n\u2022 B+ Tree: All data in leaves, better for range scans\n\u2022 Hash Index: O(1) for exact match, no range support\n\u2022 Bitmap Index: For low-cardinality columns\n\n**When to Use Indexes:**\n\u2713 Frequently queried columns (WHERE, JOIN, ORDER BY)\n\u2713 Foreign key columns\n\u2717 Small tables\n\u2717 Frequently updated columns\n\u2717 Columns with many NULL values"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>CREATE TABLE Products (\n    product_id INT PRIMARY KEY,  -- Primary index auto-created\n    name VARCHAR(100),\n    category VARCHAR(50),\n    price DECIMAL(10,2)\n);\n\n-- Single column index\nCREATE INDEX idx_category ON Products(category);\n\n-- Composite index (order matters!)\nCREATE INDEX idx_cat_price ON Products(category, price);\n\n-- Unique index\nCREATE UNIQUE INDEX idx_name ON Products(name);\n\n-- Example check\nEXPLAIN SELECT * FROM Products WHERE category = 'Electronics';</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "views",
+                "title": "Views",
+                "description": "A View is a virtual table based on the result of a SQL query. Simplifies complex queries and adds security.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Benefits & Types",
+                        "content": "**Benefits:**\n\u2022 Simplify Complex Queries: Hide joins and aggregations\n\u2022 Security: Restrict access to specific columns/rows\n\u2022 Data Independence: Applications don't need to know underlying structure\n\n**Types of Views:**\n\u2022 Simple View: Based on single table, can be updated\n\u2022 Complex View: Based on multiple tables, joins, aggregations\n\u2022 Materialized View: Physically stores data, needs refresh\n\n**Limitations:** Performance hit since query runs each time (unless materialized), update restrictions, and no indexes allowable mostly."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Simple view\nCREATE VIEW ActiveEmployees AS\nSELECT emp_id, name, department, salary FROM Employees WHERE status = 'Active';\n\n-- Security view (hide salary)\nCREATE VIEW PublicEmployeeInfo AS\nSELECT emp_id, name, department, email FROM Employees;\nGRANT SELECT ON PublicEmployeeInfo TO hr_staff;\n\n-- Materialized View (PostgreSQL)\nCREATE MATERIALIZED VIEW MonthlySales AS\nSELECT DATE_TRUNC('month', sale_date) as month, SUM(amount) as total\nFROM Sales GROUP BY 1;\nREFRESH MATERIALIZED VIEW MonthlySales;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "stored-procedures-triggers",
+                "title": "Stored Procedures & Triggers",
+                "description": "Stored Procedures are precompiled SQL code stored in the database. Triggers are special procedures that automatically execute.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "1. Stored Procedures",
+                        "content": "A Stored Procedure is a prepared collection of SQL statements that are precompiled and stored in the database. Think of it as a function in traditional programming.\n\n**Mechanics & How it Works:**\n\u2022 **Precompilation:** When created, the DBMS parses, checks for errors, and compiles it into an execution plan saved in cache. Calling it later is much faster than raw SQL.\n\u2022 **Parameters:** Can accept `IN` parameters (data passed to it), `OUT` parameters (data returned), and `INOUT`.\n\u2022 **Execution:** Explicitly called using `CALL` or `EXEC`."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Advantages of Stored Procedures for Placements",
+                        "content": "\u2022 **Reduced Network Traffic:** Instead of sending 20 lines of SQL over the network, the app sends one line: `CALL ProcessOrder(101)`.\n\u2022 **Security:** Users can be granted permission to execute the procedure without having direct access to underlying tables, preventing unauthorized modifications.\n\u2022 **Logic Centralization:** If business logic changes (e.g., tax calculation changes from 5% to 8%), you update the code in one place (the database) rather than in every app."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "2. Triggers",
+                        "content": "A Trigger is a special type of stored procedure that automatically executes (or 'fires') in response to a specific event on a particular table or view.\n\n**Mechanics & How it Works:**\n\u2022 **Event-Driven:** You cannot manually 'call' a trigger. Triggered by DML events: `INSERT`, `UPDATE`, or `DELETE`.\n\u2022 **Timing:**\n  - **BEFORE Trigger:** Fires before data is saved. Used for validation (e.g., Check age > 18).\n  - **AFTER Trigger:** Fires after data is saved. Used for logging or cascading changes.\n\u2022 **Special Tables:** Triggers use virtual tables `INSERTED` (or `NEW`) and `DELETED` (or `OLD`) to access changing data."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Trigger Use Cases",
+                        "content": "\u2022 **Auditing:** Recording who changed a record and when into an audit table.\n\u2022 **Data Integrity:** Ensuring that if a row is deleted from the Users table, all related rows in Orders are handled (referential integrity).\n\u2022 **Derived Columns:** Automatically updating a `Total_Sales` column in a Department table whenever a new Sale is inserted."
+                    },
+                    {
+                        "type": "table",
+                        "heading": "3. Comparison Summary",
+                        "content": "",
+                        "headers": [
+                            "Feature",
+                            "Stored Procedure",
+                            "Trigger"
+                        ],
+                        "rows": [
+                            [
+                                "Execution",
+                                "Manually called by a user/app.",
+                                "Automatically fired by an event."
+                            ],
+                            [
+                                "Input/Output",
+                                "Can accept and return parameters.",
+                                "Cannot accept or return parameters."
+                            ],
+                            [
+                                "Transaction",
+                                "Can commit or rollback internally.",
+                                "Cannot commit/rollback; part of the main transaction."
+                            ],
+                            [
+                                "Usage",
+                                "General logic, batch processing.",
+                                "Auditing, complex integrity checks."
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Stored Procedure\nDELIMITER //\nCREATE PROCEDURE TransferMoney(IN from_acc INT, IN to_acc INT, IN amount DECIMAL(10,2))\nBEGIN\n    DECLARE bal DECIMAL(10,2);\n    SELECT balance INTO bal FROM Accounts WHERE account_id = from_acc;\n    IF bal >= amount THEN\n        START TRANSACTION;\n        UPDATE Accounts SET balance = balance - amount WHERE account_id = from_acc;\n        UPDATE Accounts SET balance = balance + amount WHERE account_id = to_acc;\n        COMMIT;\n    END IF;\nEND //\nDELIMITER ;\n\n-- Trigger for Audit Log\nCREATE TRIGGER salary_audit\nAFTER UPDATE ON Employees FOR EACH ROW\nBEGIN\n    IF OLD.salary != NEW.salary THEN\n        INSERT INTO EmployeeAudit (emp_id, old_salary, new_salary, changed_at)\n        VALUES (NEW.emp_id, OLD.salary, NEW.salary, NOW());\n    END IF;\nEND;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "relational-algebra",
+                "title": "Relational Algebra",
+                "description": "Relational Algebra is a procedural query language that uses operators to manipulate relations (tables) and produce new relations.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Basic & Derived Operations",
+                        "content": "**Basic Operations:**\n\u2022 Selection (\u03c3): Selects rows satisfying a condition\n\u2022 Projection (\u03c0): Selects specific columns\n\u2022 Union (\u222a): Combines tuples from two relations\n\u2022 Set Difference (\u2212): Tuples in R1 but not in R2\n\u2022 Cartesian Product (\u00d7): All combinations of tuples from two relations\n\n**Derived Operations:**\n\u2022 Intersection (\u2229): Common tuples in both relations\n\u2022 Join (\u22c8): Combines related tuples from two relations (Natural, Theta, Equi)\n\u2022 Division (\u00f7): Used for 'for all' type queries"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Example",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Selection (\u03c3): \u03c3(salary > 50000)(Employees)\nSELECT * FROM Employees WHERE salary > 50000;\n\n-- Projection (\u03c0): \u03c0(name, department)(Employees)\nSELECT name, department FROM Employees;\n\n-- Union (\u222a): R1 \u222a R2\nSELECT * FROM Employees_2023 UNION SELECT * FROM Employees_2024;\n\n-- Set Difference (\u2212): R1 \u2212 R2\nSELECT * FROM AllCustomers EXCEPT SELECT * FROM PremiumCustomers;\n\n-- Natural Join (\u22c8): Employees \u22c8 Departments\nSELECT * FROM Employees NATURAL JOIN Departments;\n\n-- Theta Join: Employees \u22c8(e.dept_id = d.dept_id) Departments\nSELECT * FROM Employees e JOIN Departments d ON e.dept_id = d.dept_id;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-select",
+                "title": "SELECT - Retrieving Data",
+                "description": "SELECT is the most fundamental SQL command used to retrieve data from one or more tables.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Syntax & Key Clauses",
+                        "content": "**Syntax:** `SELECT column1, column2 FROM table_name WHERE condition;`\n\n**Key Clauses:**\n\u2022 **SELECT:** Specifies which columns to retrieve\n\u2022 **FROM:** Specifies the table(s) to query\n\u2022 **WHERE:** Filters rows based on conditions\n\u2022 **DISTINCT:** Removes duplicate rows\n\u2022 **AS:** Creates column aliases\n\u2022 **LIMIT/TOP:** Restricts number of rows returned"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Select specific columns & conditions\nSELECT name, department FROM Employees WHERE salary > 50000;\n\n-- Using DISTINCT & aliases\nSELECT DISTINCT department FROM Employees;\nSELECT name AS employee_name, salary * 12 AS annual_salary FROM Employees;\n\n-- Multiple conditions with BETWEEN and IN\nSELECT * FROM Employees WHERE department = 'IT' AND salary > 60000;\nSELECT * FROM Products WHERE price BETWEEN 100 AND 500;\nSELECT * FROM Employees WHERE department IN ('IT', 'HR', 'Sales');\n\n-- LIKE for pattern matching\nSELECT * FROM Employees WHERE name LIKE 'J%';     -- Starts with J\nSELECT * FROM Employees WHERE email LIKE '%@gmail.com';  -- Ends with\nSELECT * FROM Employees WHERE name LIKE '_ohn';   -- Second char onwards is 'ohn'\n\n-- ORDER BY and LIMIT\nSELECT * FROM Employees ORDER BY department ASC, salary DESC;\nSELECT * FROM Employees ORDER BY salary DESC LIMIT 10;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-insert",
+                "title": "INSERT - Adding Data",
+                "description": "INSERT statement adds new rows to a table.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Syntax & Key Points",
+                        "content": "**Syntax:** `INSERT INTO table_name (columns) VALUES (values);`\n\n**Key Points:**\n\u2022 Can insert single or multiple rows\n\u2022 Column order must match value order\n\u2022 Can omit column names if providing all values\n\u2022 Can insert from another table using SELECT\n\u2022 Auto-increment columns can be omitted"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Insert with specified columns\nINSERT INTO Employees (name, department, salary) VALUES ('Jane Smith', 'HR', 65000);\n\n-- Insert multiple rows\nINSERT INTO Employees (name, department, salary) VALUES\n('Alice Brown', 'IT', 80000),\n('Bob Wilson', 'Sales', 55000),\n('Carol Davis', 'HR', 60000);\n\n-- Insert from another table\nINSERT INTO EmployeeBackup (name, department, salary)\nSELECT name, department, salary FROM Employees WHERE department = 'IT';\n\n-- Insert and get the auto-generated ID (MySQL)\nINSERT INTO Orders (customer_id, total) VALUES (5, 150.00);\nSELECT LAST_INSERT_ID();</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-update",
+                "title": "UPDATE - Modifying Data",
+                "description": "UPDATE statement modifies existing rows in a table.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Syntax & Key Points",
+                        "content": "**Syntax:** `UPDATE table_name SET column1 = value1 WHERE condition;`\n\n**Key Points:**\n\u2022 Always use `WHERE` clause (unless updating all rows intentionally)\n\u2022 Can update multiple columns in one statement\n\u2022 Can use subqueries for values\n\u2022 **Be careful:** Without WHERE, ALL rows are updated!"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Update multiple columns\nUPDATE Employees SET salary = 85000, department = 'Senior IT' WHERE emp_id = 101;\n\n-- Update with calculation\nUPDATE Products SET price = price * 1.10;  -- 10% price increase\n\n-- Update using CASE\nUPDATE Employees SET salary = \n    CASE \n        WHEN department = 'IT' THEN salary * 1.15\n        WHEN department = 'HR' THEN salary * 1.10\n        ELSE salary * 1.05\n    END;\n\n-- Update with subquery\nUPDATE Employees \nSET salary = (SELECT AVG(salary) FROM Employees WHERE department = 'IT')\nWHERE emp_id = 102;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-delete",
+                "title": "DELETE - Removing Data",
+                "description": "DELETE statement removes rows from a table.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Syntax & Key Points",
+                        "content": "**Syntax:** `DELETE FROM table_name WHERE condition;`\n\n**Key Points:**\n\u2022 Always use `WHERE` clause (unless deleting all rows)\n\u2022 `DELETE` removes rows, `TRUNCATE` removes all rows faster\n\u2022 Can use subqueries in WHERE clause\n\u2022 Triggers fire on DELETE but not on TRUNCATE\n\u2022 DELETE can be rolled back, TRUNCATE often cannot"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Delete specific rows with conditions\nDELETE FROM Orders WHERE status = 'Cancelled' AND order_date < '2024-01-01';\n\n-- Delete using subquery\nDELETE FROM Employees \nWHERE dept_id IN (SELECT dept_id FROM Departments WHERE status = 'Closed');\n\n-- Delete with JOIN (MySQL)\nDELETE e FROM Employees e\nJOIN Departments d ON e.dept_id = d.dept_id\nWHERE d.dept_name = 'Obsolete';\n\n-- TRUNCATE all rows (faster, minimal logging)\nTRUNCATE TABLE TempTable;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-joins",
+                "title": "JOINs - Combining Tables",
+                "description": "JOIN combines rows from two or more tables based on related columns.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Types of JOINs",
+                        "content": "\u2022 **INNER JOIN:** Returns only matching rows from both tables\n\u2022 **LEFT JOIN:** All rows from left + matching from right (NULL if no match)\n\u2022 **RIGHT JOIN:** All rows from right + matching from left (NULL if no match)\n\u2022 **FULL OUTER JOIN:** All rows from both tables\n\u2022 **CROSS JOIN:** Cartesian product (every row with every row)\n\u2022 **SELF JOIN:** Table joined with itself"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- INNER JOIN (only matching rows)\nSELECT e.name, d.dept_name FROM Employees e\nINNER JOIN Departments d ON e.dept_id = d.dept_id;\n\n-- LEFT JOIN (all employees, even without department)\nSELECT e.name, d.dept_name FROM Employees e\nLEFT JOIN Departments d ON e.dept_id = d.dept_id;\n\n-- SELF JOIN (find employees and their managers)\nSELECT e.name AS employee, m.name AS manager FROM Employees e\nLEFT JOIN Employees m ON e.manager_id = m.emp_id;\n\n-- Multiple JOINs with WHERE\nSELECT e.name, d.dept_name, p.project_name FROM Employees e\nJOIN Departments d ON e.dept_id = d.dept_id\nJOIN Projects p ON e.project_id = p.project_id\nWHERE d.dept_name = 'IT' AND e.salary > 50000;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-aggregation",
+                "title": "Aggregation Functions",
+                "description": "Aggregate functions perform calculations on a set of values and return a single value.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Common Functions & Clauses",
+                        "content": "**Functions:**\n\u2022 `COUNT()`: Number of rows\n\u2022 `SUM()`: Total of numeric column\n\u2022 `AVG()`: Average value\n\u2022 `MIN()`/`MAX()`: Smallest/Largest value\n\u2022 `GROUP_CONCAT()` / `STRING_AGG()`: Concatenate values\n\n**Clauses:**\n\u2022 `GROUP BY`: Groups rows with same values\n\u2022 `HAVING`: Filters groups (like WHERE for aggregates)"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Basic & COUNT variations\nSELECT COUNT(*) FROM Employees;           -- All rows including NULL\nSELECT COUNT(DISTINCT department) FROM Employees;  -- Unique values\n\n-- GROUP BY multiple columns\nSELECT department, job_title, AVG(salary) FROM Employees\nGROUP BY department, job_title;\n\n-- WHERE vs HAVING\nSELECT department, AVG(salary) FROM Employees\nWHERE status = 'Active'      -- Filters rows BEFORE grouping\nGROUP BY department\nHAVING AVG(salary) > 50000;  -- Filters groups AFTER grouping\n\n-- Concatenate values (MySQL)\nSELECT department, GROUP_CONCAT(name ORDER BY name SEPARATOR ', ')\nFROM Employees GROUP BY department;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-subqueries",
+                "title": "Subqueries",
+                "description": "A subquery is a query nested inside another query. Can be used in SELECT, FROM, WHERE, or HAVING.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Types & Operators",
+                        "content": "**Types:**\n\u2022 **Scalar Subquery:** Returns single value\n\u2022 **Row Subquery:** Returns single row\n\u2022 **Table Subquery:** Returns table (used in FROM)\n\u2022 **Correlated Subquery:** References outer query (runs for each outer row)\n\n**Key Operators:** `IN`, `NOT IN`, `EXISTS`, `NOT EXISTS`, `ANY`, `ALL`"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Scalar subquery in SELECT\nSELECT name, salary, (SELECT AVG(salary) FROM Employees) AS company_avg\nFROM Employees;\n\n-- EXISTS / NOT EXISTS\nSELECT * FROM Departments d\nWHERE EXISTS (SELECT 1 FROM Employees e WHERE e.dept_id = d.dept_id);\n\n-- Correlated subquery (runs for each row)\nSELECT e.name, e.salary FROM Employees e\nWHERE e.salary > (\n    SELECT AVG(salary) FROM Employees WHERE dept_id = e.dept_id\n);\n\n-- Subquery in FROM (derived table)\nSELECT dept_summary.department, dept_summary.avg_sal FROM (\n    SELECT department, AVG(salary) AS avg_sal FROM Employees GROUP BY department\n) AS dept_summary WHERE dept_summary.avg_sal > 60000;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-window-functions",
+                "title": "Window Functions",
+                "description": "Window functions perform calculations across a set of rows related to the current row, without collapsing rows like GROUP BY.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Components & Common Functions",
+                        "content": "**Components:**\n\u2022 `OVER()`: Defines the window\n\u2022 `PARTITION BY`: Divides rows into groups\n\u2022 `ORDER BY`: Defines order within partition\n\u2022 `ROWS/RANGE`: Defines frame boundaries\n\n**Common Functions:**\n\u2022 `ROW_NUMBER()`, `RANK()`, `DENSE_RANK()`\n\u2022 `LEAD()`, `LAG()`: Access next/previous rows\n\u2022 `FIRST_VALUE()`, `LAST_VALUE()`\n\u2022 aggregates with `OVER()`"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- ROW_NUMBER with PARTITION\nSELECT name, department, salary,\n    ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS dept_rank\nFROM Employees;\n\n-- RANK vs DENSE_RANK\nSELECT name, salary,\n    RANK() OVER (ORDER BY salary DESC) AS rank,        -- 1,2,2,4 (gaps)\n    DENSE_RANK() OVER (ORDER BY salary DESC) AS d_rank -- 1,2,2,3 (no gaps)\nFROM Employees;\n\n-- LAG and LEAD (access adjacent rows)\nSELECT name, salary,\n    LAG(salary, 1) OVER (ORDER BY emp_id) AS prev_salary,\n    LEAD(salary, 1) OVER (ORDER BY emp_id) AS next_salary\nFROM Employees;\n\n-- Running total\nSELECT name, salary, SUM(salary) OVER (ORDER BY emp_id) AS running_total\nFROM Employees;</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-ddl",
+                "title": "DDL - Data Definition Language",
+                "description": "DDL commands define and modify database structure.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "Commands & Constraints",
+                        "content": "**Commands:**\n\u2022 `CREATE`: Create new objects\n\u2022 `ALTER`: Modify existing objects\n\u2022 `DROP`: Delete objects\n\u2022 `TRUNCATE`: Remove all data from table\n\n**Constraints:**\n\u2022 `PRIMARY KEY`, `FOREIGN KEY`, `UNIQUE`, `NOT NULL`, `CHECK`, `DEFAULT`"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- CREATE TABLE with constraints\nCREATE TABLE Employees (\n    emp_id INT PRIMARY KEY AUTO_INCREMENT,\n    name VARCHAR(100) NOT NULL,\n    email VARCHAR(100) UNIQUE,\n    department VARCHAR(50) DEFAULT 'General',\n    salary DECIMAL(10,2) CHECK (salary > 0),\n    manager_id INT,\n    FOREIGN KEY (manager_id) REFERENCES Employees(emp_id)\n);\n\n-- ALTER TABLE operations\nALTER TABLE Employees ADD phone VARCHAR(15);\nALTER TABLE Employees MODIFY COLUMN phone VARCHAR(20);\nALTER TABLE Employees ADD CONSTRAINT chk_salary CHECK (salary >= 0);\n\n-- CREATE INDEX\nCREATE INDEX idx_department ON Employees(department);\n\n-- DROP vs TRUNCATE vs DELETE\n-- DROP: Removes table + data + structure\n-- TRUNCATE: Removes all data, keeps structure\n-- DELETE: Removes specific rows, can use WHERE</pre>"
+                    }
+                ]
+            },
+            {
+                "id": "sql-cte-advanced",
+                "title": "CTEs and Advanced SQL",
+                "description": "Common Table Expressions (CTEs) create temporary named result sets that simplify complex queries.",
+                "cards": [
+                    {
+                        "type": "list",
+                        "heading": "CTE Benefits & Advanced Features",
+                        "content": "**CTE Benefits:**\n\u2022 Improve readability\n\u2022 Enable recursive queries\n\u2022 Can be referenced multiple times\n\u2022 Better than subqueries for complex logic\n\n**Other Advanced Features:**\n\u2022 `CASE WHEN`: Conditional logic\n\u2022 `COALESCE`/`NULLIF`: NULL handling\n\u2022 `UNION`/`INTERSECT`/`EXCEPT`: Set operations"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "SQL Examples",
+                        "content": "<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>-- Simple CTE\nWITH DeptSalary AS (\n    SELECT department, AVG(salary) AS avg_salary FROM Employees GROUP BY department\n)\nSELECT e.name, e.salary, ds.avg_salary FROM Employees e\nJOIN DeptSalary ds ON e.department = ds.department\nWHERE e.salary > ds.avg_salary;\n\n-- CASE WHEN\nSELECT name, salary,\n    CASE \n        WHEN salary >= 100000 THEN 'Senior'\n        WHEN salary >= 60000 THEN 'Mid-level'\n        ELSE 'Junior'\n    END AS level\nFROM Employees;\n\n-- COALESCE (first non-NULL value)\nSELECT name, COALESCE(phone, email, 'No contact') AS contact FROM Employees;\n\n-- UNION (combine results, remove duplicates)\nSELECT name, 'Employee' AS type FROM Employees\nUNION\nSELECT name, 'Customer' AS type FROM Customers;</pre>"
+                    }
+                ]
+            }
+        ]
+    },
+    "cn": {
+        "title": "Computer Networks",
+        "description": "Complete CN notes with OSI, TCP/IP, protocols. Learn network layers, routing protocols, and prepare for CN interviews.",
+        "topics": [
+            {
+                "id": "osi-model",
+                "title": "OSI Model",
+                "description": "Open Systems Interconnection - 7 Layer Model",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Application Layer (Layer 7)",
+                        "content": "The Application Layer is the topmost layer and closest to the end user. It provides network services directly to applications.\n\n\u2022 **Data Unit:** Data\n\u2022 **Protocols:** HTTP, HTTPS, FTP, SMTP, DNS, DHCP, Telnet, SSH\n\u2022 **Devices:** Gateways, Firewalls\n\n**Key Functions:**\n- Network Virtual Terminal\n- File Transfer, Access, and Management (FTAM)\n- Mail Services\n- Directory Services\n\n**Example:** When you open a web browser and visit a website, you're using HTTP/HTTPS protocols."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Presentation Layer (Layer 6)",
+                        "content": "The Presentation Layer acts as a translator between the network and application. It handles data formatting, encryption, and compression.\n\n\u2022 **Data Unit:** Data\n\u2022 **Protocols:** SSL/TLS, JPEG, MPEG, GIF, ASCII, EBCDIC\n\u2022 **Devices:** Gateway\n\n**Key Functions:**\n- Translation: Converting data formats (ASCII \u2194 EBCDIC)\n- Encryption/Decryption: SSL/TLS encryption\n- Compression: Reducing data size for transmission\n\n**Example:** When you see the lock icon in your browser, SSL/TLS at the Presentation Layer is encrypting your data."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Session Layer (Layer 5)",
+                        "content": "The Session Layer establishes, manages, and terminates sessions between applications. It acts like a dialog controller.\n\n\u2022 **Data Unit:** Data\n\u2022 **Protocols:** NetBIOS, PPTP, RPC, SQL, NFS\n\u2022 **Devices:** Gateway\n\n**Key Functions:**\n- Session Establishment, Maintenance, and Termination\n- Synchronization: Using checkpoints\n- Dialog Control: Half-duplex or Full-duplex\n\n**Session Modes:**\n- Simplex: One-way communication\n- Half-Duplex: Two-way, one at a time\n- Full-Duplex: Two-way simultaneous"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Transport Layer (Layer 4)",
+                        "content": "The Transport Layer provides end-to-end communication between processes. It's responsible for reliable data transfer.\n\n\u2022 **Data Unit:** Segment (TCP) / Datagram (UDP)\n\u2022 **Protocols:** TCP, UDP, SCTP, DCCP\n\u2022 **Devices:** Gateway, Firewall\n\n**Key Functions:**\n- Segmentation and Reassembly\n- Connection Control (TCP) or Connectionless (UDP)\n- Flow Control & Error Control\n- Port Addressing\n\n**Port Numbers:** HTTP: 80, HTTPS: 443, FTP: 21, SSH: 22, SMTP: 25, DNS: 53"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Network Layer (Layer 3)",
+                        "content": "The Network Layer handles logical addressing and routing. It determines the best path for data to travel across networks.\n\n\u2022 **Data Unit:** Packet\n\u2022 **Protocols:** IP, ICMP, IGMP, IPsec, ARP, RARP\n\u2022 **Devices:** Router, Layer 3 Switch\n\n**Key Functions:**\n- Logical Addressing (IP Addresses)\n- Routing: Finding optimal path (RIP, OSPF, BGP)\n- Packet Forwarding\n- Fragmentation and Reassembly"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Data Link Layer (Layer 2)",
+                        "content": "The Data Link Layer provides node-to-node data transfer and handles physical addressing (MAC addresses).\n\n\u2022 **Data Unit:** Frame\n\u2022 **Protocols:** Ethernet, PPP, HDLC, Frame Relay, ATM\n\u2022 **Devices:** Switch, Bridge, NIC\n\n**Key Functions:**\n- Framing: Encapsulating packets into frames\n- Physical Addressing: MAC addresses (48-bit)\n- Error Detection: CRC (Cyclic Redundancy Check)\n- Access Control: CSMA/CD, CSMA/CA"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Physical Layer (Layer 1)",
+                        "content": "The Physical Layer is the lowest layer, dealing with actual physical transmission of raw bits over a medium.\n\n\u2022 **Data Unit:** Bits\n\u2022 **Protocols:** Ethernet Physical, USB, Bluetooth, RS-232\n\u2022 **Devices:** Hub, Repeater, Cables\n\n**Key Functions:**\n- Bit Synchronization: Clock synchronization\n- Bit Rate Control: Transmission speed\n- Physical Topologies: Star, Bus, Ring, Mesh\n- Transmission Modes: Simplex, Half-duplex, Full-duplex"
+                    }
+                ]
+            },
+            {
+                "id": "tcp-3-way-handshake",
+                "title": "TCP 3-Way Handshake",
+                "description": "The process used in a TCP/IP network to establish a reliable connection.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Introduction",
+                        "content": "The TCP 3-Way Handshake is the process used in a TCP/IP network to establish a connection between a client and a server. It is a multi-step process that requires both the client and server to exchange synchronization and acknowledgment packets before real data transmission begins.\n\nThink of it as a formal introduction: **'I want to talk'** \u2192 **'I heard you, I'm ready too'** \u2192 **'Great, let's start.'**"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "The Objective of the Handshake",
+                        "content": "Before sending data, the two machines must agree on:\n\n\u2022 **Initial Sequence Numbers (ISN):** To keep data packets in the correct order.\n\u2022 **Window Size:** To manage flow control (how much data can be sent before an acknowledgment is needed).\n\u2022 **Connection State:** Ensuring both sides are ready and willing to communicate."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Step 1: SYN (Synchronize)",
+                        "content": "The client (the initiator) wants to establish a connection with the server. It sends a segment with the SYN flag set.\n\n\u2022 **Action:** The client picks a random Initial Sequence Number (ISN), let's call it X.\n\u2022 **Packet Details:** The packet contains `SYN=1`, `ACK=0`, and `Sequence Number = X`.\n\u2022 **State:** The client enters the `SYN-SENT` state. The server receives this and knows a client wants to start a connection."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Step 2: SYN-ACK (Synchronize-Acknowledgment)",
+                        "content": "The server receives the client\u2019s request. If its port is open and it has resources, it agrees to the connection by sending a SYN-ACK message.\n\n\u2022 **Acknowledgment (ACK):** The server acknowledges the client's sequence number by sending back `Acknowledgment Number = X + 1`. This tells the client, *'I received X, and I\u2019m expecting X+1 next.'*\n\u2022 **Synchronization (SYN):** The server picks its own random Initial Sequence Number, let's call it Y.\n\u2022 **Packet Details:** `SYN=1`, `ACK=1`, `Sequence Number = Y`, and `Ack Number = X + 1`.\n\u2022 **State:** The server enters the `SYN-RECEIVED` state."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Step 3: ACK (Acknowledgment)",
+                        "content": "The client receives the server\u2019s SYN-ACK. Now the client must confirm that it received the server\u2019s sequence number.\n\n\u2022 **Action:** The client responds with an ACK packet. It increments the server's sequence number Y to Y+1.\n\u2022 **Packet Details:** `SYN=0`, `ACK=1`, `Sequence Number = X + 1`, and `Acknowledgment Number = Y + 1`.\n\u2022 **State:** The client enters the `ESTABLISHED` state. Once the server receives it, it also enters the `ESTABLISHED` state."
+                    },
+                    {
+                        "type": "table",
+                        "heading": "Summary Table for Placements",
+                        "content": "",
+                        "headers": [
+                            "Step",
+                            "Initiator",
+                            "Flags",
+                            "Seq No",
+                            "Ack No",
+                            "Description"
+                        ],
+                        "rows": [
+                            [
+                                "1. SYN",
+                                "Client",
+                                "SYN=1",
+                                "X",
+                                "\u2014",
+                                "Hey, can we connect? Here is my starting number X."
+                            ],
+                            [
+                                "2. SYN-ACK",
+                                "Server",
+                                "SYN=1, ACK=1",
+                                "Y",
+                                "X+1",
+                                "I hear you (X+1). I'm ready too, here is my number Y."
+                            ],
+                            [
+                                "3. ACK",
+                                "Client",
+                                "ACK=1",
+                                "X+1",
+                                "Y+1",
+                                "Got it (Y+1). We are connected!"
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "faq",
+                        "heading": "Critical Interview Questions",
+                        "questions": [
+                            {
+                                "q": "Why is it a '3-way' handshake and not 2-way?",
+                                "a": "A 2-way handshake would only prove that the server heard the client. The 3rd step (ACK) is required to prove to the server that the client is still there and heard the server's response. This prevents 'half-open' connections that waste server resources."
+                            },
+                            {
+                                "q": "What is a SYN Flood Attack?",
+                                "a": "An attacker sends thousands of SYN requests (Step 1) but never sends the final ACK (Step 3). The server keeps resources 'reserved' in the SYN-RECEIVED state for these fake connections until it runs out of memory and crashes."
+                            },
+                            {
+                                "q": "What are ISNs and why are they random?",
+                                "a": "Initial Sequence Numbers are random to prevent 'Sequence Number Guessing' attacks, where a hacker could inject fake data into a session if they knew exactly what number came next."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "tcp-ip",
+                "title": "TCP/IP Protocol Suite",
+                "description": "The four-layer network model that powers the modern internet.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "TCP/IP vs OSI Overview",
+                        "content": "The TCP/IP model condenses the OSI into 4 functional layers that represent practical implementation rather than theoretical purity.\n\n\u2022 **Network Access Layer:** Maps to physical & data link layers.\n\u2022 **Internet Layer:** Maps to network layer.\n\u2022 **Transport Layer:** Maps directly to transport layer.\n\u2022 **Application Layer:** Maps to session, presentation, and application layers."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Application Layer (TCP/IP)",
+                        "content": "Unlike the OSI model, this layer handles all high-level protocols, data representation, and session management tasks.\n\n\u2022 **Protocols:** HTTP(S), FTP, SMTP, DNS, SSH.\n\u2022 **Usage:** Direct interface for user applications requesting network services."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Transport Layer (TCP/IP)",
+                        "content": "Provides reliable or unreliable data delivery depending on the required protocol.\n\n\u2022 **TCP:** Reliable, connection-oriented, acknowledges data, ensures ordered delivery.\n\u2022 **UDP:** Unreliable, connectionless, fast, no acknowledgments. Ideal for video and gaming."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Internet Layer (TCP/IP)",
+                        "content": "Responsible for logical transmission across different networks via routing.\n\n\u2022 **Core Protocol:** Internet Protocol (IPv4/IPv6).\n\u2022 **Companion Protocols:** ICMP (for ping/errors), ARP (resolves IP to MAC)."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Network Access Layer (TCP/IP)",
+                        "content": "Handles hardware-level transmission and physical addressing to send raw data bits over physical media.\n\n\u2022 **Responsibilities:** MAC addressing, CSMA/CD, signaling, physical cabling."
+                    }
+                ]
+            },
+            {
+                "id": "network-devices",
+                "title": "Network Devices",
+                "description": "Hardware mechanisms used to connect and route data across computers.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "Hub (Layer 1)",
+                        "content": "A basic, non-intelligent device that broadcasts data to all connected ports.\n\n\u2022 **Operation:** Multiport repeater. When it receives a signal, it copies it out to all other ports.\n\u2022 **Drawback:** High collision rates and extreme security vulnerabilities since all nodes see all traffic."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Switch (Layer 2)",
+                        "content": "An intelligent multiport device that learns MAC addresses and sends data only to the specific intended port.\n\n\u2022 **Operation:** Consults its internal MAC Address Table to forward frames.\n\u2022 **Advantage:** Eliminates collisions via full-duplex transmission and improves security."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Router (Layer 3)",
+                        "content": "A highly intelligent edge device that connects multiple different IP networks together.\n\n\u2022 **Operation:** Inspects destination IP addresses and consults Routing Tables to determine the optimal path for packets.\n\u2022 **Usage:** Connects a LAN to a WAN (like the internet)."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "Gateway & Firewall",
+                        "content": "Advanced security and translation nodes.\n\n\u2022 **Gateway:** Translates traffic between utterly different network architectures (e.g., LAN to external Cloud architecture).\n\u2022 **Firewall:** Hardware or software that strictly filters incoming and outgoing packets based on predefined security rules."
+                    }
+                ]
+            },
+            {
+                "id": "ip-addressing",
+                "title": "IP Addressing",
+                "description": "Logical systems required to identify machines globally on a network.",
+                "cards": [
+                    {
+                        "type": "table",
+                        "heading": "1. IPv4 Classful Addressing (The Legacy System)",
+                        "content": "IPv4 uses a 32-bit address space (~4.3 billion addresses). Originally, the internet was divided into five 'Classes' to accommodate different organization sizes.",
+                        "headers": [
+                            "Class",
+                            "Range (First Octet)",
+                            "Default Subnet Mask",
+                            "Use Case"
+                        ],
+                        "rows": [
+                            [
+                                "Class A",
+                                "1 \u2013 126",
+                                "255.0.0.0 (/8)",
+                                "Large Networks: Designed for governments and ISPs. It offers 16 million addresses per network."
+                            ],
+                            [
+                                "Class B",
+                                "128 \u2013 191",
+                                "255.255.0.0 (/16)",
+                                "Medium Networks: Designed for large universities and corporations. Offers 65,534 addresses."
+                            ],
+                            [
+                                "Class C",
+                                "192 \u2013 223",
+                                "255.255.255.0 (/24)",
+                                "Small Networks: Designed for small businesses. Offers only 254 usable host addresses."
+                            ],
+                            [
+                                "Class D",
+                                "224 \u2013 239",
+                                "N/A",
+                                "Multicast: Used for sending data from one source to a specific group."
+                            ],
+                            [
+                                "Class E",
+                                "240 \u2013 255",
+                                "N/A",
+                                "Experimental: Reserved for research and future use by IETF/IANA."
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "list",
+                        "heading": "Special IPv4 Addresses to Remember",
+                        "content": "\u2022 **0.0.0.0:** Represents 'any' network or the default route.\n\u2022 **127.0.0.1 (Loopback):** Used to test the network stack on your own local machine.\n\u2022 **169.254.x.x (APIPA):** Assigned automatically by the OS when the DHCP server is unreachable.\n\u2022 **255.255.255.255:** The 'Limited Broadcast' address."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "2. IPv6: The Modern Protocol",
+                        "content": "IPv6 was created to solve the exhaustion of IPv4 addresses. It uses a 128-bit address space, represented in Hexadecimal (8 groups of 4 hex digits, separated by colons).\n\n**Characteristics of IPv6:**\n\u2022 **Massive Space:** 2^128 addresses (roughly 340 undecillion).\n\u2022 **Hexadecimal Notation:** Example: 2001:0db8:85a3:0000:0000:8a2e:0370:7334.\n\u2022 **Address Compression:** Leading zeros can be omitted, and consecutive groups of zeros can be replaced with `::` (only once per address).\n\u2022 **Stateless Address Autoconfiguration (SLAAC):** Devices can generate their own IP address using their MAC address (EUI-64 process) without needing a DHCP server."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "3. Advantages of IPv6 over IPv4",
+                        "content": "In a technical round, focus on these five points to show deep knowledge:\n\n\u2022 **A. End-to-End Connectivity (No more NAT):** In IPv4, we use NAT to hide multiple private devices behind one public IP. In IPv6, every single device on earth can have a unique, public IP address, restoring true peer-to-peer communication.\n\u2022 **B. Efficient Routing (Fixed Header Size):** IPv4 headers vary in size (20 to 60 bytes). IPv6 has a fixed header size of 40 bytes. Because the header is predictable, routers can process packets much faster in hardware.\n\u2022 **C. Elimination of Broadcasts:** IPv4 uses Broadcast ('everyone listen!'), which creates massive noise. IPv6 replaces this with Multicast and Anycast.\n\u2022 **D. Built-in Security (IPSec):** In IPv4, IPSec is an 'add-on.' In IPv6, IPSec support is a mandatory, integrated feature.\n\u2022 **E. Quality of Service (QoS) Support:** IPv6 headers include a Flow Label field. This allows routers to identify and prioritize specific traffic flows (like video streams) without inspecting the encrypted payload."
+                    },
+                    {
+                        "type": "table",
+                        "heading": "4. Key Differences Table",
+                        "content": "",
+                        "headers": [
+                            "Feature",
+                            "IPv4",
+                            "IPv6"
+                        ],
+                        "rows": [
+                            [
+                                "Address Size",
+                                "32-bit",
+                                "128-bit"
+                            ],
+                            [
+                                "Format",
+                                "Dotted Decimal (192.168.1.1)",
+                                "Hexadecimal (2001:db8::1)"
+                            ],
+                            [
+                                "Number of Addresses",
+                                "~4.3 Billion",
+                                "~340 Undecillion"
+                            ],
+                            [
+                                "Configuration",
+                                "Manual or DHCP",
+                                "SLAAC or DHCPv6"
+                            ],
+                            [
+                                "Security",
+                                "Optional (IPSec)",
+                                "Mandatory/Built-in"
+                            ],
+                            [
+                                "Broadcast",
+                                "Yes",
+                                "No (uses Multicast/Anycast)"
+                            ],
+                            [
+                                "NAT",
+                                "Required for scaling",
+                                "Not needed"
+                            ]
+                        ]
+                    },
+                    {
+                        "type": "faq",
+                        "heading": "Interviewer's Deep Dive Question",
+                        "questions": [
+                            {
+                                "q": "What is Anycast in IPv6?",
+                                "a": "Anycast is a communication method where multiple servers share the same IP address. A request sent to an Anycast address is routed to the 'nearest' or 'best' server in the group. This is heavily used by CDNs and DNS root servers to reduce latency globally."
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": "network-security",
+                "title": "Network Security Topics",
+                "description": "Defending network infrastructure and transmission from cyber threats.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "1. Firewalls: The Gatekeepers",
+                        "content": "A firewall is a security system that monitors and controls incoming and outgoing network traffic based on predetermined security rules.\n\n**Packet Filtering (Layer 3 & 4)**\n\u2022 **How it works:** Inspects the header of a packet (Source IP, Dest IP, Protocol, Port).\n\u2022 **Pros:** Extremely fast because it doesn't look at payload. Happens at hardware level.\n\u2022 **Cons:** Stateless and easily fooled (e.g., malicious script sent through Port 80).\n\n**Application Firewall / WAF (Layer 7)**\n\u2022 **How it works:** Deep Packet Inspection (DPI). Looks at the payload data. WAF understands web traffic (HTTP).\n\u2022 **Pros:** Highly secure; protects against XSS and SQL Injection.\n\u2022 **Cons:** Slow and resource-intensive because it has to read inside every packet."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "2. Hashing vs. Encryption: Integrity vs. Confidentiality",
+                        "content": "One of the most common interview traps is confusing these two.\n\n**Hashing (One-Way Function)**\n\u2022 **Purpose:** Integrity. Ensure file/password hasn't been tampered with.\n\u2022 **Mechanism:** Input run through an algorithm (SHA-256) to produce fixed-length string fingerprint.\n\u2022 **Key Characteristic:** Irreversible. Cannot de-hash.\n\u2022 **Use Case:** Sites store hashes, not passwords. When you type password, site hashes it and compares.\n\n**Encryption (Two-Way Function)**\n\u2022 **Purpose:** Confidentiality. Ensure only authorized parties can read data.\n\u2022 **Mechanism:** Use algorithm (AES) + Key to scramble data.\n\u2022 **Key Characteristic:** Reversible.\n\u2022 **Symmetric:** Same key to lock and unlock (Fast, e.g., AES).\n\u2022 **Asymmetric:** Public Key to lock, Private Key to unlock (Secure, e.g., RSA)."
+                    },
+                    {
+                        "type": "list",
+                        "heading": "3. DDoS (Distributed Denial of Service)",
+                        "content": "If a DoS attack is one person shouting at you so you can't hear, a DDoS is a stadium full of people shouting simultaneously.\n\n**The Mechanics:** Attacker infects thousands of unprotected devices (Zombies/Bots) forming a Botnet.\n**The Goal:** Overwhelm bandwidth/CPU so legitimate users receive 'Service Unavailable'.\n\n**Defense Strategies:**\n\u2022 **Rate Limiting:** Rule stating 'One IP can only make 10 requests/sec.'\n\u2022 **CDN (Content Delivery Network):** Cloudflare absorbs the 'shouting' across worldwide servers.\n\u2022 **Blackhole Routing:** Shunting all traffic to a black hole to save network (causes downtime)."
+                    },
+                    {
+                        "type": "faq",
+                        "heading": "4. Bonus: IDS vs. IPS (Placement Specific)",
+                        "questions": [
+                            {
+                                "q": "What's the difference between detection and prevention?",
+                                "a": "IDS (Intrusion Detection System): Like a security camera. Watches traffic and alerts admin. It does NOT stop the attack.\n\nIPS (Intrusion Prevention System): Like a security guard. Sits 'inline' and instantly drops packets to stop the threat in real-time."
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "oop": {
+        "title": "Object Oriented Programming",
+        "description": "Master OOPs with inheritance, polymorphism, design patterns, encapsulation, and abstractions.",
+        "topics": [
+            {
+                "id": "python-oop",
+                "title": "Python OOP Fundamentals",
+                "description": "Master Object-Oriented Programming with Python's clean and elegant syntax.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "1. Classes and Objects",
+                        "content": "**What is a Class?** A blueprint for creating objects. It defines attributes and methods.\n**What is an Object?** An instance of a class with actual values.\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>class Car:\n    def __init__(self, brand, color):  # Constructor\n        self.brand = brand\n        self.color = color\n        self.speed = 0\n    \n    def accelerate(self):\n        self.speed += 10\n        print(f\"{self.brand} is now going {self.speed} km/h\")\n\nmy_car = Car(\"Toyota\", \"Red\")\nmy_car.accelerate()</pre>\n\n**Key Points:**\n\u2022 Use `class` keyword.\n\u2022 `__init__` is the constructor.\n\u2022 `self` refers to the current instance.\n\u2022 No `new` keyword needed."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "2. Encapsulation",
+                        "content": "**What is Encapsulation?** Bundling data and methods together, restricting direct access.\n\n**Naming Conventions:**\n\u2022 `public`: No underscore\n\u2022 `_protected`: Single underscore (convention)\n\u2022 `__private`: Double underscore (name mangling)\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>class BankAccount:\n    def __init__(self, start_balance):\n        self.__balance = start_balance  # Private\n    \n    @property\n    def balance(self):\n        return self.__balance\n\naccount = BankAccount(1000)\nprint(account.balance)  # Uses getter</pre>"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "3. Inheritance",
+                        "content": "**What is Inheritance?** Allows a class to inherit attributes and methods from another class. Python supports Single, Multiple, Multilevel, and Hierarchical inheritance.\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>class Animal:\n    def eat(self): print(\"Eating\")\n\nclass Dog(Animal):\n    def bark(self): print(\"Woof!\")\n\nmy_dog = Dog()\nmy_dog.eat()   # Inherited</pre>\n\n**Method Resolution Order (MRO):** `print(ClassName.__mro__)` shows the lookup order for methods in multiple inheritance."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "4. Polymorphism",
+                        "content": "**What is Polymorphism?** Treating objects of different classes generically. Python uses \"Duck Typing\" (if it walks and quacks like a duck, it's a duck!).\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>class Dog: def speak(self): return \"Woof!\"\nclass Cat: def speak(self): return \"Meow!\"\n\ndef animal_sound(animal): print(animal.speak())\n\nanimal_sound(Dog())\nanimal_sound(Cat())</pre>\n\n**Operator Overloading:** Overriding magic methods like `__add__` to change how operators like `+` work with objects."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "5. Abstraction & Magic Methods",
+                        "content": "**Abstract Base Classes (ABC):** Force child classes to implement methods.\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>from abc import ABC, abstractmethod\nclass Vehicle(ABC):\n    @abstractmethod\n    def start(self): pass</pre>\n\n**Common Magic Methods (Dunder Methods):**\n\u2022 `__init__`: Constructor\n\u2022 `__str__`: User-friendly string\n\u2022 `__repr__`: Developer-friendly string\n\u2022 `__eq__`: Equality (`==`)\n\u2022 `__lt__`, `__gt__`: Comparisons (`<`, `>`)\n\u2022 `__add__`, `__sub__`: Arithmetic (`+`, `-`)\n\u2022 `__len__`: Length (`len()`)"
+                    }
+                ]
+            },
+            {
+                "id": "java-oop",
+                "title": "Java OOP Fundamentals",
+                "description": "Object-Oriented Programming principles strictly enforced in Java.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "1. Classes and Objects",
+                        "content": "**What is a Class?** A blueprint or template for creating objects. It defines properties (fields) and behaviors (methods).\n**What is an Object?** An instance of a class \u2013 a concrete entity created from the blueprint.\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>public class Car {\n    String brand;\n    String color;\n    int speed;\n    \n    public Car(String brand, String color) {\n        this.brand = brand;\n        this.color = color;\n        this.speed = 0;\n    }\n    \n    public void accelerate() {\n        speed += 10;\n        System.out.println(brand + \" is going \" + speed + \" km/h\");\n    }\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Car myCar = new Car(\"Toyota\", \"Red\");\n        myCar.accelerate();\n    }\n}</pre>\n\n**Key Points:**\n\u2022 Use `class` keyword.\n\u2022 Use `new` keyword to create objects.\n\u2022 `this` refers to current object.\n\u2022 Constructor has same name as class."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "2. Encapsulation",
+                        "content": "**What is Encapsulation?** Bundling data (fields) and methods within a class, and restricting direct access to some components.\n\n**Access Modifiers:**\n\u2022 `private`: Only accessible within the class\n\u2022 `protected`: Accessible within package and subclasses\n\u2022 `public`: Accessible from anywhere\n\u2022 `default`: Accessible within the same package\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>public class BankAccount {\n    private double balance;\n    \n    public BankAccount(double initialBalance) {\n        this.balance = initialBalance;\n    }\n    \n    public double getBalance() { return balance; }\n    \n    public void deposit(double amount) {\n        if (amount > 0) balance += amount;\n    }\n}</pre>\n\n**Benefits:** Data hiding, controlled access, and validation before modification."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "3. Inheritance",
+                        "content": "**What is Inheritance?** Allows a child class (subclass) to inherit properties and methods from a parent class (superclass).\n\n**Types in Java:** Single, Multilevel, Hierarchical. (Note: Java doesn't support multiple inheritance with classes - use interfaces).\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>public class Animal {\n    protected String name;\n    public Animal(String name) { this.name = name; }\n    public void eat() { System.out.println(\"Eating\"); }\n}\n\npublic class Dog extends Animal {\n    public Dog(String name) { super(name); }\n    @Override\n    public void eat() { System.out.println(name + \" eating dog food\"); }\n}</pre>\n\n**Key Points:** Use `extends` keyword. `super` refers to parent class. Use `@Override` annotation for overridden methods. Child class inherits all non-private members."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "4. Polymorphism",
+                        "content": "**What is Polymorphism?** \"Many forms\". Allows objects to be treated as instances of their parent class while behaving according to their actual class.\n\n**Compile-time (Static): Method Overloading**\nSame method name, different parameters.\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>public int add(int a, int b) { return a + b; }\npublic double add(double a, double b) { return a + b; }</pre>\n\n**Runtime (Dynamic): Method Overriding**\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>Shape[] shapes = { new Circle(5), new Rectangle(4, 6) };\nfor (Shape shape : shapes) {\n    shape.draw();  // Calls appropriate overridden method\n}</pre>"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "5. Abstraction",
+                        "content": "**What is Abstraction?** Hiding complex implementation details and showing only essential features.\n\n**Abstract Classes vs Interfaces:**\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>// Abstract class - cannot instantiate directly\npublic abstract class Vehicle {\n    public abstract void start(); // Must be implemented by child\n    public void display() { }      // Concrete method allowed\n}\n\n// Interface - 100% Abstraction\npublic interface Flyable {\n    void fly(); // implicitly public abstract\n}</pre>\n\n**Abstract Class vs Interface:**\n\u2022 **Methods:** Abstract classes can have both abstract and concrete. Interfaces all abstract (Java 8+ can have default methods).\n\u2022 **Variables:** Abstract classes can have instance variables. Interfaces only have constants (`public static final`).\n\u2022 **Inheritance:** Single inheritance for classes vs Multiple interfaces.\n\u2022 **Constructor:** Classes have them, interfaces don't."
+                    }
+                ]
+            },
+            {
+                "id": "cpp-oop",
+                "title": "C++ OOP Fundamentals",
+                "description": "Object-Oriented Programming featuring manual memory management and pointers in C++.",
+                "cards": [
+                    {
+                        "type": "text",
+                        "heading": "1. Classes and Objects",
+                        "content": "**What is a Class?** A user-defined data type containing data members and member functions.\n**What is an Object?** An instance of a class.\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>#include &lt;iostream&gt;\nusing namespace std;\n\nclass Car {\nprivate:\n    string brand;\n    int speed;\n\npublic:\n    Car(string b) {\n        brand = b;\n        speed = 0;\n    }\n    \n    void accelerate() {\n        speed += 10;\n        cout &lt;&lt; brand &lt;&lt; \" is now going \" &lt;&lt; speed &lt;&lt; \" km/h\\n\";\n    }\n};\n\nint main() {\n    Car myCar(\"Toyota\");\n    myCar.accelerate();\n    return 0;\n}</pre>\n\n**Key Points:**\n\u2022 Access specifiers: `public`, `private`, `protected`.\n\u2022 Constructor has same name as class.\n\u2022 Use dot operator (`.`) to access members."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "2. Encapsulation",
+                        "content": "**What is Encapsulation?** Bundling data and methods together while restricting direct access to internal data.\n\n**Access Specifiers:**\n\u2022 `private`: Only accessible within the class\n\u2022 `protected`: Accessible in class and derived classes\n\u2022 `public`: Accessible from anywhere\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>class BankAccount {\nprivate:\n    double balance;\npublic:\n    BankAccount(double initial) : balance(initial) {}\n    \n    // const indicates it doesn't modify the object\n    double getBalance() const { return balance; }\n    \n    void deposit(double amount) {\n        if (amount > 0) balance += amount;\n    }\n};</pre>"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "3. Inheritance",
+                        "content": "**What is Inheritance?** Allows a class to inherit properties and methods from another class. C++ supports Multiple Inheritance!\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>class Animal {\nprotected:\n    string name;\npublic:\n    Animal(string n) : name(n) {}\n    void eat() { cout &lt;&lt; \"Eating\\n\"; }\n};\n\nclass Dog : public Animal {\npublic:\n    Dog(string n) : Animal(n) {} // Call base constructor\n    void eat() { cout &lt;&lt; name &lt;&lt; \" eating dog food\\n\"; }\n};</pre>\n\n**Multiple Inheritance Example:** `class Duck : public Flyable, public Swimmable { ... };`"
+                    },
+                    {
+                        "type": "text",
+                        "heading": "4. Polymorphism & Virtual Functions",
+                        "content": "**Compile-time Polymorphism (Overloading):** Multiple functions with the same name but different parameters.\n\n**Runtime Polymorphism (Virtual Functions):**\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>class Shape {\npublic:\n    virtual void draw() { cout &lt;&lt; \"Drawing shape\\n\"; }\n    virtual ~Shape() {} // Virtual destructor is essential!\n};\n\nclass Circle : public Shape {\npublic:\n    void draw() override { cout &lt;&lt; \"Drawing circle\\n\"; }\n};\n\nint main() {\n    Shape* shape = new Circle();\n    shape-&gt;draw(); // Calls Circle's draw\n    delete shape;\n}</pre>\n\n**Key Points:** `virtual` in base class, `override` in derived class. Without `virtual`, early binding calls the base method."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "5. Abstraction & Pure Virtual Functions",
+                        "content": "**Abstract Classes:** A class with at least one pure virtual function (`= 0`). Cannot be instantiated.\n\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>class Vehicle {\npublic:\n    virtual void start() = 0; // Pure virtual function\n    virtual ~Vehicle() {}\n};</pre>\n\n**Interface (Pure Abstract Class):** C++ has no native `interface` keyword, but an abstract class with *only* pure virtual functions serves as an interface.\n\n**Abstract vs Interface in C++:**\n\u2022 **Abstract Class:** Can have concrete methods and data members. Partial implementation.\n\u2022 **Interface:** All pure virtual methods, usually no data. Defines a strict contract."
+                    },
+                    {
+                        "type": "text",
+                        "heading": "6. Templates (Generic Programming)",
+                        "content": "**Templates** allow you to write generic code that works with any data type.\n\n**Function Templates:**\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>template &lt;typename T&gt;\nT maximum(T a, T b) {\n    return (a > b) ? a : b;\n}\ncout &lt;&lt; maximum(10, 20); // int\ncout &lt;&lt; maximum(3.14, 2.71); // double</pre>\n\n**Class Templates:**\n<pre class='bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm text-gray-800 font-mono'>template &lt;typename K, typename V&gt;\nclass Pair {\nprivate:\n    K key;\n    V value;\npublic:\n    Pair(K k, V v) : key(k), value(v) {}\n};\nPair&lt;string, int&gt; age(\"Alice\", 25);</pre>"
+                    }
+                ]
+            }
+        ]
+    }
+}
