@@ -6,3 +6,7 @@ gunicorn==21.2.0
 google-genai
 python-dotenv
 pdfplumber
+fastapi
+uvicorn
+sqlalchemy
+pydantic
