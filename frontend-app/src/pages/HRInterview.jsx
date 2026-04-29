@@ -266,9 +266,20 @@ const HRInterview = () => {
              {manualFallbackMode && (
                  <div className="space-y-6">
                      {fallbackErrorMsg && (
-                         <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl flex items-start gap-3">
-                             <div className="font-bold flex-shrink-0 mt-0.5">⚠️ API Error:</div>
-                             <div className="font-light text-sm">{fallbackErrorMsg}</div>
+                         <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl flex items-center justify-between gap-3">
+                             <div className="flex items-start gap-3">
+                                 <div className="font-bold flex-shrink-0 mt-0.5">⚠️ API Error:</div>
+                                 <div className="font-light text-sm">{fallbackErrorMsg}</div>
+                             </div>
+                             <button 
+                                 onClick={() => {
+                                     setManualFallbackMode(false);
+                                     setApiKey('');
+                                 }}
+                                 className="btn-secondary py-2 px-4 whitespace-nowrap text-sm border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10"
+                             >
+                                 Input New API Key
+                             </button>
                          </div>
                      )}
                      <div className="glass-card p-10 border border-emerald-500/30 flex flex-col items-center relative overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.1)]">
