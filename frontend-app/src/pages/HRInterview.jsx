@@ -260,7 +260,6 @@ const HRInterview = () => {
                              {analyzing ? 'Analyzing Persona & Generating...' : <><Play className="w-6 h-6"/> Generate Intense Questions</>}
                          </button>
                      </div>
-                     </div>
                  </div>
              )}
 
