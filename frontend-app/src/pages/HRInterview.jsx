@@ -10,6 +10,11 @@ const HRInterview = () => {
     const [apiKey, setApiKey] = useState('');
     const [analyzing, setAnalyzing] = useState(false);
     const [questions, setQuestions] = useState([]);
+    const [manualFallbackMode, setManualFallbackMode] = useState(false);
+    const [fallbackStep, setFallbackStep] = useState(1);
+    const [projectDomain, setProjectDomain] = useState('');
+    const [projectFeatures, setProjectFeatures] = useState('');
+    const [fallbackErrorMsg, setFallbackErrorMsg] = useState('');
 
     useEffect(() => {
         const savedKey = localStorage.getItem('gemini_api_key');
@@ -42,16 +47,24 @@ const HRInterview = () => {
             const data = await res.json();
             
             if (!res.ok) {
-                alert(data.detail || data.error || "An error occurred. Please check your API key.");
+                const err = data.detail || data.error || "An error occurred.";
+                console.error(err);
                 setAnalyzing(false);
+                setFallbackErrorMsg(typeof err === 'string' ? err : JSON.stringify(err));
+                setManualFallbackMode(true);
                 return;
             }
             
             if (data.questions) {
                 if (data.questions.length === 1 && typeof data.questions[0] === 'string' && data.questions[0].includes('API Key limit')) {
-                    alert("API Key limit reached. Please provide a new API key to continue.");
+                    setFallbackErrorMsg(data.questions[0]);
+                    setManualFallbackMode(true);
                 } else if (data.questions.length === 1 && data.questions[0].question && data.questions[0].question.includes('API Key')) {
-                    alert(data.questions[0].question);
+                    setFallbackErrorMsg(data.questions[0].question);
+                    setManualFallbackMode(true);
+                } else if (data.questions.length === 1 && typeof data.questions[0] === 'string' && data.questions[0].includes('Error generating')) {
+                    setFallbackErrorMsg(data.questions[0]);
+                    setManualFallbackMode(true);
                 } else {
                     setQuestions(data.questions);
                 }
@@ -59,9 +72,75 @@ const HRInterview = () => {
             setAnalyzing(false);
         } catch(e) {
             console.error(e);
-            alert("Network error or server unreachable. Make sure the backend is running.");
             setAnalyzing(false);
+            setFallbackErrorMsg("Network error or server unreachable.");
+            setManualFallbackMode(true);
         }
+    };
+
+    const generateStaticQuestions = () => {
+        let domainQs = [];
+        if (projectDomain === 'Frontend') {
+            domainQs = [
+                {
+                    question: "You mentioned your project involves Frontend work. How exactly did you mitigate prop-drilling or manage state in your application, and what were the architectural trade-offs?",
+                    solution: "- **State Management**: Discuss whether you used Context API, Redux, Zustand, etc. and why.\n- **Trade-offs**: Mention bundle size, boilerplate, or performance.\n- **Performance**: Address re-renders and component memoization."
+                },
+                {
+                    question: "Frontend performance is critical. Can you describe a specific time you optimized the Largest Contentful Paint (LCP) or First Input Delay (FID) in your application?",
+                    solution: "- **Metrics**: Show you understand Web Vitals.\n- **Actions**: Discuss lazy loading, code splitting, or optimizing images.\n- **Results**: Provide data on the improvement if possible."
+                }
+            ];
+        } else if (projectDomain === 'Backend') {
+            domainQs = [
+                {
+                    question: "For the Backend portion of your project, how did you handle database connection pooling and prevent query bottlenecks under load?",
+                    solution: "- **Database**: Discuss ORMs vs raw queries, indexing, and connection pools.\n- **Scaling**: Mention handling high concurrency without dropping connections.\n- **Trade-offs**: ACID compliance vs performance."
+                },
+                {
+                    question: "How did you design your API architecture? If you had to migrate it from a monolith to microservices, what would be your first step?",
+                    solution: "- **Design**: REST vs GraphQL vs gRPC.\n- **Migration**: Discuss domain-driven design and separating databases per service.\n- **Challenges**: Mention distributed transactions or network latency."
+                }
+            ];
+        } else if (projectDomain === 'Data/AI') {
+            domainQs = [
+                {
+                    question: "In your Data/AI project, how did you handle data cleaning and ensure your model wasn't overfitting to the training set?",
+                    solution: "- **Data Pipeline**: Discuss handling missing values, normalization, and feature engineering.\n- **Validation**: Mention cross-validation techniques.\n- **Metrics**: Discuss precision, recall, and F1 score trade-offs."
+                },
+                {
+                    question: "Deploying AI models can be tricky. How did you serve your model, and how would you scale the inference architecture if traffic spiked 100x?",
+                    solution: "- **Serving**: Discuss FastAPI, Flask, or specialized servers like TF Serving.\n- **Scaling**: Mention batch inference vs real-time, GPU utilization, and horizontal scaling."
+                }
+            ];
+        } else {
+            domainQs = [
+                {
+                    question: "For a Full Stack or general project, how did you ensure end-to-end type safety and handle error boundaries between the client and server?",
+                    solution: "- **Type Safety**: Discuss TypeScript, tRPC, or OpenAPI spec generation.\n- **Error Handling**: Mention structured API responses and frontend global error catchers."
+                },
+                {
+                    question: "What was the most severe technical debt you accumulated in this project, and how did you plan to pay it down?",
+                    solution: "- **Self-Awareness**: Acknowledge that all projects have debt.\n- **Specifics**: Point out a specific rushed feature or non-scalable architectural choice.\n- **Action Plan**: Discuss refactoring steps without stopping feature development."
+                }
+            ];
+        }
+
+        const featureQ = {
+            question: `You highlighted these core functionalities: "${projectFeatures}". If a critical bug in this specific area brought down production, what is your exact step-by-step incident response plan?`,
+            solution: "- **Triage**: Acknowledge the outage, check logs (Datadog/CloudWatch).\n- **Mitigation**: Roll back the deployment or toggle a feature flag.\n- **Resolution**: Reproduce locally, fix, write a regression test.\n- **Post-Mortem**: Document why it happened and how to prevent it."
+        };
+
+        const behavioralQ = {
+            question: "Describe a time during this project where you vehemently disagreed with a technical decision made by a teammate or mentor. How did you resolve the professional conflict?",
+            solution: "- **Context**: Keep it brief and focused on the technical disagreement.\n- **Action**: Highlight that you used data, benchmarks, or documentation to argue your point, NOT emotion.\n- **Result**: Show that you either convinced them or committed to their decision professionally."
+        };
+
+        setQuestions([...domainQs, featureQ, behavioralQ]);
+        setManualFallbackMode(false);
+        setFallbackStep(1);
+        setProjectDomain('');
+        setProjectFeatures('');
     };
 
     const handleExport = () => {
@@ -125,7 +204,7 @@ const HRInterview = () => {
              
              <h2 className="text-3xl font-display font-bold mb-8 text-white">Generate Personalized Questions</h2>
              
-             {questions.length === 0 && (
+             {questions.length === 0 && !manualFallbackMode && (
                  <div className="space-y-6">
                      <div className="glass-card p-10 border border-white/10 flex flex-col items-center relative overflow-hidden">
                          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 pointer-events-none"></div>
@@ -180,6 +259,69 @@ const HRInterview = () => {
                          >
                              {analyzing ? 'Analyzing Persona & Generating...' : <><Play className="w-6 h-6"/> Generate Intense Questions</>}
                          </button>
+                     </div>
+                     </div>
+                 </div>
+             )}
+
+             {manualFallbackMode && (
+                 <div className="space-y-6">
+                     {fallbackErrorMsg && (
+                         <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl flex items-start gap-3">
+                             <div className="font-bold flex-shrink-0 mt-0.5">⚠️ API Error:</div>
+                             <div className="font-light text-sm">{fallbackErrorMsg}</div>
+                         </div>
+                     )}
+                     <div className="glass-card p-10 border border-emerald-500/30 flex flex-col items-center relative overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.1)]">
+                         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-primary/5 pointer-events-none"></div>
+                         
+                         <div className="text-center mb-8 relative z-10">
+                             <h3 className="text-2xl font-display font-bold text-emerald-400 mb-3 flex items-center justify-center gap-3">
+                                 <ListChecks className="w-8 h-8"/> Manual Interview Configuration
+                             </h3>
+                             <p className="text-gray-300 font-light max-w-xl mx-auto">
+                                 Our AI is currently at peak capacity or your API limit was reached. Let's get you specialized questions manually!
+                             </p>
+                         </div>
+
+                         {fallbackStep === 1 && (
+                             <div className="w-full max-w-2xl relative z-10 animate-fade-in">
+                                 <label className="block text-white font-bold mb-6 font-display text-xl text-center">What is the primary domain of your project?</label>
+                                 <div className="grid grid-cols-2 gap-4">
+                                     {['Frontend', 'Backend', 'Full Stack', 'Data/AI'].map(domain => (
+                                         <button
+                                             key={domain}
+                                             onClick={() => { setProjectDomain(domain); setFallbackStep(2); }}
+                                             className="py-4 px-6 rounded-xl border border-white/10 bg-white/5 hover:bg-primary/20 hover:border-primary/50 text-white font-medium transition-all"
+                                         >
+                                             {domain}
+                                         </button>
+                                     ))}
+                                 </div>
+                             </div>
+                         )}
+
+                         {fallbackStep === 2 && (
+                             <div className="w-full max-w-2xl relative z-10 animate-fade-in">
+                                 <label className="block text-white font-bold mb-4 font-display text-xl">What are the core functionalities or key challenges of this project?</label>
+                                 <textarea
+                                     value={projectFeatures}
+                                     onChange={(e) => setProjectFeatures(e.target.value)}
+                                     placeholder="e.g., User authentication, real-time chat using WebSockets, dealing with large dataset pagination..."
+                                     className="w-full bg-surface/50 border border-white/10 rounded-xl p-5 text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 min-h-[150px] mb-6"
+                                 />
+                                 <div className="flex gap-4">
+                                     <button onClick={() => setFallbackStep(1)} className="btn-secondary py-3 px-6 flex-1">Back</button>
+                                     <button 
+                                         onClick={generateStaticQuestions}
+                                         disabled={!projectFeatures.trim()}
+                                         className="btn-primary py-3 px-6 flex-2 w-full disabled:opacity-50"
+                                     >
+                                         Generate Questions
+                                     </button>
+                                 </div>
+                             </div>
+                         )}
                      </div>
                  </div>
              )}
